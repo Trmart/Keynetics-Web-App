@@ -1,1 +1,2 @@
-# Keynetics-Web-App
+# Flask Template
+A barebones template for Flask.
