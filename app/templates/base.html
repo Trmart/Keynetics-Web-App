@@ -9,7 +9,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
 
-    <title>Title</title>
+    {% if title %}
+    <title>KeyAssembler - {{ title }}</title>
+
+    {% else %}
+
+    <title>KeyAssembler</title>
+
+    {% endif %}
   </head>
 
   <body>
@@ -18,23 +25,38 @@
     </header>
 
     <main role="main" class="container">
-      <h1 class="text-center display-4 keynetics-text">k e y n e t i c s</h1>
+      <h1 class="text-center display-4 keynetics-text">K e y n e t i c s</h1>
       <ul class="nav nav-pills nav-justified">
         <li class="nav-item">
-          <a class="nav-link active h5" href="#">Quene</a>
+          <a class="nav-link active h5" href="{{ url_for('home') }}">Home</a>
+          <li class="nav-item">
+            <a class="nav-link h5" href="{{ url_for('jobs') }}">Jobs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link h5" href="{{ url_for('codingprofiles') }}">Coding Profiles</a>
+          </li>
         </li>
         <li class="nav-item">
-          <a class="nav-link h5" href="#">Coding Profiles</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link h5" href="#">About</a>
+          <a class="nav-link h5" href="{{ url_for('about') }}">About</a>
         </li>
       </ul>
       {% block content %}{% endblock %}
     </main>
 
-    <footer>
 
+    <footer class="text-center text-lg-start mt-5">
+      
+      <div class="text-center p-3">
+        © 2022-2023 Created by
+        <a class="text-dark" href="https://www.linkedin.com/in/austin-kugler" target="_blank"><u>Austin Kugler</u></a>
+        ,
+        <a class="text-dark" href="https://www.linkedin.com/in/taylor-martin-261542222" target="_blank"><u>Taylor Martin</u></a>
+        ,
+        <a class="text-dark" href="https://www.linkedin.com/" target="_blank"><u>Zach Preston</u></a>
+        and 
+        <a class="text-dark" href="https://www.linkedin.com/" target="_blank"><u>John Myers</u></a>
+
+      </div>
     </footer>
 
     <!-- Optional JavaScript -->

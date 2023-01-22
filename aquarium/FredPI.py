@@ -26,3 +26,5 @@ def toggle_pump_power():
 def toggle_light_power():
    """Turn the UV light on or off"""
 
+def convert_coordiants_to_radians(coordinates):
+   """Convert coordinates to radians"""

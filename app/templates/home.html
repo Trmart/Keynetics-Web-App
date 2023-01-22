@@ -1,5 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-  
+
+<h1 class = "text-center display-4 ">Welcome to the KeyAssembler</h1>
+   <p>
+   
+   </p>
+   <p>
+   <img src="{{ url_for('static', filename='img/robot_arm.jpeg') }}" alt="robot arm" class="center">
+   
+   </p>
+   <a class="btn btn-outline-primary mb-5 btn-lg d-flex justify-content-center" href="{{ url_for('jobs') }}">Create a job</a>
 {% endblock %}
