@@ -8,6 +8,8 @@ from flask import render_template
 
 from app import app
 
+from aquarium.src.fredpi.fredpi import interface
+
 
 @app.route('/')
 def home():
@@ -24,3 +26,8 @@ def codingprofiles():
 @app.route('/jobs')
 def jobs():
     return render_template('jobs.html', title='Jobs')
+
+@app.route('/test_wave')
+def test_wave():
+    interface.test_wave()
+    return '<h2>Done!<h2>'

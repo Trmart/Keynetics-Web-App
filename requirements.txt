@@ -34,6 +34,7 @@ examples-rclpy-minimal-publisher==0.15.1
 examples-rclpy-minimal-service==0.15.1
 examples-rclpy-minimal-subscriber==0.15.1
 Flask==2.2.2
+-e git+https://github.com/Trmart/Keynetics-Web-App.git@ae10c330d75bdb04a54db0bf46edb64a7f2eba0b#egg=fredpi&subdirectory=aquarium/src/fredpi
 geometry-msgs==4.2.3
 image-geometry==3.2.1
 importlib-metadata==4.12.0
@@ -60,6 +61,7 @@ osrf-pycommon==2.0.2
 pcl-msgs==1.0.0
 pendulum-msgs==0.20.3
 python-qt-binding==1.1.1
+PyYAML==6.0
 qt-dotgraph==2.2.2
 qt-gui==2.2.2
 qt-gui-cpp==2.2.2
