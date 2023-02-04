@@ -1,0 +1,9 @@
+source;share/fredpi/hook/pythonpath.ps1
+source;share/fredpi/hook/pythonpath.dsv
+source;share/fredpi/hook/pythonpath.sh
+source;share/fredpi/hook/ament_prefix_path.ps1
+source;share/fredpi/hook/ament_prefix_path.dsv
+source;share/fredpi/hook/ament_prefix_path.sh
+source;../../build/fredpi/share/fredpi/hook/pythonpath_develop.ps1
+source;../../build/fredpi/share/fredpi/hook/pythonpath_develop.dsv
+source;../../build/fredpi/share/fredpi/hook/pythonpath_develop.sh
