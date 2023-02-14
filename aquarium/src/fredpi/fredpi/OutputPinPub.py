@@ -20,11 +20,16 @@ class OutputPinPub(Node):
 
 
     # Publishes a message.
-    def publish(self, pin_number, pin_power):
+    def publish(self, pin_number, pin_power, pin_pulse=None):
         # Convert values to message.
         message = Int8MultiArray(
             data=[pin_number, (1 if pin_power else 0)]
         )
+
+        # Add pulse duration if needed.
+        if pin_pulse is not None:
+            # Append to data.
+            message.data.append(pin_pulse)
 
         # Publish.
         self.__output_pin_pub.publish(message)

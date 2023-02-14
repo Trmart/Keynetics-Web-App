@@ -31,3 +31,8 @@ def jobs():
 def test_wave():
     interface.test_wave()
     return '<h2>Done!<h2>'
+
+@app.route('/test_pulse')
+def test_pulse():
+    interface.test_pulse()
+    return '<h2>Done!<h2>'

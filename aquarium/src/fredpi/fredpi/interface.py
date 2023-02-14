@@ -67,6 +67,20 @@ def test_wave():
 
 
 
+# Test out by turning on the pin for as short as possible.
+def test_pulse():
+    # Send a stream of messages to get ROS 2 to recognize the connection.
+    # Also resets the robot's position.
+    print('Initializing')
+    for i in range(10):
+        joint_positions_pub.publish([0.0 for i in range(6)], 80)
+        time.sleep(0.1)
+
+    # Pulse the pump output pin.
+    print('Pulsing pump')
+    output_pin_pub.publish(1, True, 0)
+
+
 
 
 
