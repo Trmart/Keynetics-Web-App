@@ -1,5 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-  
+  <ul class="nav nav-pills nav-justified">
+    <li class="nav-item">
+      <a class="nav-link h5" href="{{ url_for('home') }}">Home</a>
+      <li class="nav-item">
+        <a class="nav-link h5 active" href="{{ url_for('jobs') }}">Jobs</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link h5" href="{{ url_for('configs') }}">Configs</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link h5" href="{{ url_for('about') }}">About</a>
+      </li>
+    </li>
+  </ul>
 {% endblock %}

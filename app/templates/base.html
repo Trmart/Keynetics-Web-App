@@ -10,39 +10,33 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
 
     {% if title %}
-    <title>KeyAssembler - {{ title }}</title>
-
+      <title>Keynetics - {{ title }}</title>
     {% else %}
-
-    <title>KeyAssembler</title>
-
+      <title>Keynetics</title>
     {% endif %}
   </head>
 
   <body>
     <header>
-      
     </header>
 
     <main role="main" class="container">
-      <h1 class="text-center display-4 keynetics-text">K e y n e t i c s</h1>
-      <ul class="nav nav-pills nav-justified">
-        <li class="nav-item">
-          <a class="nav-link active h5" href="{{ url_for('home') }}">Home</a>
-          <li class="nav-item">
-            <a class="nav-link h5" href="{{ url_for('jobs') }}">Jobs</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link h5" href="{{ url_for('codingprofiles') }}">Coding Profiles</a>
-          </li>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link h5" href="{{ url_for('about') }}">About</a>
-        </li>
-      </ul>
-      {% block content %}{% endblock %}
+      <div class="row">
+        <div class="col-md-12">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          <h1 class="text-center display-4 keynetics-text">K e y n e t i c s</h1>
+          {% block content %}{% endblock %}
+        </div>
+      </div>
     </main>
-
 
     <footer class="text-center text-lg-start mt-5">
       
@@ -53,9 +47,8 @@
         <a class="text-dark" href="https://www.linkedin.com/in/taylor-martin-261542222" target="_blank"><u>Taylor Martin</u></a>
         ,
         <a class="text-dark" href="https://www.linkedin.com/" target="_blank"><u>Zach Preston</u></a>
-        and 
+        and
         <a class="text-dark" href="https://www.linkedin.com/in/john-myers-49638416b" target="_blank"><u>John Myers</u></a>
-
       </div>
     </footer>
 
