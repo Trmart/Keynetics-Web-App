@@ -20,5 +20,20 @@ cd Keynetics-Web-App
 python3 -m venv env
 source env/bin/activate
 pip install -r requirements.txt
+```
+
+Create Database:
+In the root directory, create a file named `.env` with the contents:
+```
+FLASK_SECRET_KEY='fredthebot'
+DATABASE_URL='sqlite:///app.db'
+```
+Then, run the below command.
+```
+python3 create_db.py
+```
+
+Run Web App Locally:
+```
 python3 run.py
 ```
