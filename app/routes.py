@@ -36,7 +36,7 @@ def configs():
         )
         db.session.add(plug_config)
         db.session.commit()
-        flash(f'Successfully added a new plug configuration!', 'success')
+        flash(f'Added {plug_config.name}!', 'success')
         return redirect(url_for('home'))
     return render_template('configs.html', title='Configs', form=form, configs=models.PlugConfig.query.all())
 
@@ -44,6 +44,21 @@ def configs():
 @app.route('/jobs', methods=['GET', 'POST'])
 def jobs():
     return render_template('jobs.html', title='Jobs')
+
+
+@app.route('/help')
+def help():
+    return render_template('help.html', title='Help')
+
+
+@app.route('/delete-config/<int:config_id>')
+def delete_config(config_id):
+    print(config_id)
+    plug_config = models.PlugConfig.query.get(config_id)
+    db.session.delete(plug_config)
+    db.session.commit()
+    flash(f'Deleted {plug_config.name}!', 'success')
+    return redirect(url_for('configs'))
 
 
 @app.route('/test_wave')
