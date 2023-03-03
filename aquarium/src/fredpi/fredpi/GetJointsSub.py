@@ -37,4 +37,4 @@ class GetJointsSub(Node):
     # Callback function for "/get_joints" subscriber.
     def __gj_callback(self, message):
         # Update data value.
-        self.__position_list = message.position
+        self.__position_list = [p for p in message.position]

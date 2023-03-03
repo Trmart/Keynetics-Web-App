@@ -22,8 +22,7 @@ class GetOutputsSub(Node):
         )
 
         # Prepare data values.
-        self.__pin_number = -1
-        self.__pin_power = False
+        self.__output_pins = [-1, -1, -1, -1, -1, -1, -1]
 
 
     # Gets one message from the subscriber.
@@ -32,11 +31,10 @@ class GetOutputsSub(Node):
         rclpy.spin_once(self)
 
         # Return data values.
-        return self.__pin_number, self.__pin_power
+        return self.__output_pins
 
 
     # Callback function for "/get_outputs" subscriber.
     def __go_callback(self, message):
         # Update data values.
-        self.__pin_number = message.data[0]
-        self.__pin_power = bool(message.data[1])
+        self.__output_pins = [o for o in message.data]
