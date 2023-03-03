@@ -4,11 +4,11 @@ Maps the webpage URLs to specific functions which handle page logic and
 rendering.
 
 '''
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
 
 from app import app, db, models, forms
 
-from aquarium.src.fredpi.fredpi import interface
+# from aquarium.src.fredpi.fredpi import interface
 
 
 @app.route('/')
@@ -43,7 +43,7 @@ def configs():
 
 @app.route('/jobs', methods=['GET', 'POST'])
 def jobs():
-    return render_template('jobs.html', title='Jobs')
+    return render_template('jobs.html', title='Jobs', configs=models.PlugConfig.query.all())
 
 
 @app.route('/help')
@@ -53,7 +53,6 @@ def help():
 
 @app.route('/delete-config/<int:config_id>')
 def delete_config(config_id):
-    print(config_id)
     plug_config = models.PlugConfig.query.get(config_id)
     db.session.delete(plug_config)
     db.session.commit()
@@ -61,13 +60,19 @@ def delete_config(config_id):
     return redirect(url_for('configs'))
 
 
-@app.route('/test_wave')
-def test_wave():
-    interface.test_wave()
-    return '<h2>Done!<h2>'
+@app.route('/start-job', methods=['GET', 'POST'])
+def start_job():
+    config_id = request.form.get('config_select')
+    print(f'Starting job for config {config_id}')
+    return redirect(url_for('jobs'))
+
+# @app.route('/test_wave')
+# def test_wave():
+#     interface.test_wave()
+#     return '<h2>Done!<h2>'
 
 
-@app.route('/test_pulse')
-def test_pulse():
-    interface.test_pulse()
-    return '<h2>Done!<h2>'
+# @app.route('/test_pulse')
+# def test_pulse():
+#     interface.test_pulse()
+#     return '<h2>Done!<h2>'

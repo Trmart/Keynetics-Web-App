@@ -12,7 +12,7 @@ from app import db
 
 class PlugConfig(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(32), nullable=False)
+    name = db.Column(db.String(32), nullable=False, unique=True)
     cure_profile = db.Column(db.String(32), nullable=False)
     horizontal_offset = db.Column(db.Float, nullable=False)
     vertical_offset = db.Column(db.Float, nullable=False)

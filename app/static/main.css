@@ -3,3 +3,9 @@
   font-family: 'Helvetica', sans-serif;
   margin-top: 0.25em;
 }
+
+body
+{
+  background-color: #181a1b;
+  color: #cac3bc;
+}
