@@ -25,7 +25,7 @@ def about():
 def configs():
     form = forms.PlugConfigForm()
     if form.validate_on_submit():
-        plug_config = models.PlugConfig(
+        config = models.PlugConfig(
             name=form.name.data,
             cure_profile=form.cure_profile.data,
             horizontal_offset=form.horizontal_offset.data,
@@ -34,9 +34,9 @@ def configs():
             vertical_gap=form.vertical_gap.data,
             slot_gap=form.slot_gap.data
         )
-        db.session.add(plug_config)
+        db.session.add(config)
         db.session.commit()
-        flash(f'Added {plug_config.name}!', 'success')
+        flash(f'Added {config.name}!', 'success')
         return redirect(url_for('home'))
     return render_template('configs.html', title='Configs', form=form, configs=models.PlugConfig.query.all())
 
@@ -51,13 +51,40 @@ def help():
     return render_template('help.html', title='Help')
 
 
-@app.route('/delete-config/<int:config_id>')
+@app.route('/delete-config/<int:config_id>', methods=['GET', 'POST'])
 def delete_config(config_id):
-    plug_config = models.PlugConfig.query.get(config_id)
-    db.session.delete(plug_config)
+    config = models.PlugConfig.query.get(config_id)
+    db.session.delete(config)
     db.session.commit()
-    flash(f'Deleted {plug_config.name}!', 'success')
+    flash(f'Deleted {config.name}!', 'success')
     return redirect(url_for('configs'))
+
+
+@app.route('/edit/<int:config_id>', methods=['GET', 'POST'])
+def edit_config(config_id):
+    config = models.PlugConfig.query.get(config_id)
+    form = forms.PlugConfigForm()
+    form.name.data = config.name
+    form.cure_profile.data = config.cure_profile
+    form.horizontal_offset.data = config.horizontal_offset
+    form.vertical_offset.data = config.vertical_offset
+    form.horizontal_gap.data = config.horizontal_gap
+    form.vertical_gap.data = config.vertical_gap
+    form.slot_gap.data = config.slot_gap
+    if form.validate_on_submit():
+        # print(form)
+        # config.name = form.name.data
+        # config.cure_profile = form.cure_profile.data
+        # config.horizontal_offset = form.horizontal_offset.data
+        # config.vertical_offset = form.vertical_offset.data
+        # config.horizontal_gap = form.horizontal_gap.data
+        # config.vertical_gap = form.vertical_gap.data
+        # config.slot_gap = form.slot_gap.data
+        # db.session.add(config)
+        # db.session.commit()
+        flash(f'Updated {config.name}!', 'success')
+        return redirect(url_for('configs'))
+    return render_template('edit.html', title=f'Edit {config.name}', form=form, config=config)
 
 
 @app.route('/start-job', methods=['GET', 'POST'])
