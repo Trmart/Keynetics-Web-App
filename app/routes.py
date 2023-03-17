@@ -64,26 +64,25 @@ def delete_config(config_id):
 def edit_config(config_id):
     config = models.PlugConfig.query.get(config_id)
     form = forms.PlugConfigForm()
-    form.name.data = config.name
-    form.cure_profile.data = config.cure_profile
-    form.horizontal_offset.data = config.horizontal_offset
-    form.vertical_offset.data = config.vertical_offset
-    form.horizontal_gap.data = config.horizontal_gap
-    form.vertical_gap.data = config.vertical_gap
-    form.slot_gap.data = config.slot_gap
     if form.validate_on_submit():
-        # print(form)
-        # config.name = form.name.data
-        # config.cure_profile = form.cure_profile.data
-        # config.horizontal_offset = form.horizontal_offset.data
-        # config.vertical_offset = form.vertical_offset.data
-        # config.horizontal_gap = form.horizontal_gap.data
-        # config.vertical_gap = form.vertical_gap.data
-        # config.slot_gap = form.slot_gap.data
-        # db.session.add(config)
-        # db.session.commit()
+        config.name = form.name.data
+        config.cure_profile = form.cure_profile.data
+        config.horizontal_offset = form.horizontal_offset.data
+        config.vertical_offset = form.vertical_offset.data
+        config.horizontal_gap = form.horizontal_gap.data
+        config.vertical_gap = form.vertical_gap.data
+        config.slot_gap = form.slot_gap.data
+        db.session.commit()
         flash(f'Updated {config.name}!', 'success')
         return redirect(url_for('configs'))
+    else:
+        form.name.data = config.name
+        form.cure_profile.data = config.cure_profile
+        form.horizontal_offset.data = config.horizontal_offset
+        form.vertical_offset.data = config.vertical_offset
+        form.horizontal_gap.data = config.horizontal_gap
+        form.vertical_gap.data = config.vertical_gap
+        form.slot_gap.data = config.slot_gap
     return render_template('edit.html', title=f'Edit {config.name}', form=form, config=config)
 
 
