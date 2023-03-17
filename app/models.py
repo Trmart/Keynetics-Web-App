@@ -7,6 +7,8 @@ in a database and their relationships.
     https://flask-sqlalchemy.palletsprojects.com/en/2.x/
 
 '''
+from enum import Enum
+
 from app import db
 
 
@@ -31,3 +33,31 @@ class PlugConfig(db.Model):
 
     def __repr__(self):
         return f'PlugConfig(id={self.id}, name={self.name}, cure_profile={self.cure_profile})'
+
+
+class StatusEnum(Enum):
+    started = 'Started'
+    dispensing = 'Dispensing'
+    curing = 'Curing'
+    stopped = 'Stopped'
+    finished = 'Finished'
+
+
+class PlugJob(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    config_id = db.Column(db.Integer, db.ForeignKey('plug_config.id'), nullable=False)
+    config = db.relationship('PlugConfig', backref=db.backref('jobs', lazy=True))
+    status = db.Column(db.Enum(StatusEnum), nullable=False, default=StatusEnum.started)
+    start_time = db.Column(db.DateTime, nullable=True)
+    end_time = db.Column(db.DateTime, nullable=True)
+    duration = db.Column(db.Float, nullable=True)
+
+    def __init__(self, config_id, start_time):
+        self.config_id = config_id
+        self.start_time = start_time
+
+    def __repr__(self):
+        return f'PlugJob(id={self.id}, config_id={self.config_id}, status={self.status})'
+
+    def active(self):
+        return self.status == StatusEnum.started or self.status == StatusEnum.dispensing or self.status == StatusEnum.curing

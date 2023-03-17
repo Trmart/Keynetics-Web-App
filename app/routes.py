@@ -6,14 +6,15 @@ rendering.
 '''
 from flask import render_template, flash, redirect, url_for, request
 
-from app import app, db, models, forms
+from datetime import datetime
 
+from app import app, db, models, forms
 # from aquarium.src.fredpi.fredpi import interface
 
 
-@app.route('/about')
-def about():
-    return render_template('about.html', title='About')
+@app.route('/', methods=['GET', 'POST'])
+def jobs():
+    return render_template('jobs.html', title='Jobs', configs=models.PlugConfig.query.all(), jobs=models.PlugJob.query.all())
 
 
 @app.route('/configs', methods=['GET', 'POST'])
@@ -36,23 +37,14 @@ def configs():
     return render_template('configs.html', title='Configs', form=form, configs=models.PlugConfig.query.all())
 
 
-@app.route('/', methods=['GET', 'POST'])
-def jobs():
-    return render_template('jobs.html', title='Jobs', configs=models.PlugConfig.query.all())
-
-
 @app.route('/help')
 def help():
     return render_template('help.html', title='Help')
 
 
-@app.route('/delete-config/<int:config_id>', methods=['GET', 'POST'])
-def delete_config(config_id):
-    config = models.PlugConfig.query.get(config_id)
-    db.session.delete(config)
-    db.session.commit()
-    flash(f'Deleted {config.name}!', 'success')
-    return redirect(url_for('configs'))
+@app.route('/about')
+def about():
+    return render_template('about.html', title='About')
 
 
 @app.route('/edit/<int:config_id>', methods=['GET', 'POST'])
@@ -78,7 +70,7 @@ def edit_config(config_id):
         form.horizontal_gap.data = config.horizontal_gap
         form.vertical_gap.data = config.vertical_gap
         form.slot_gap.data = config.slot_gap
-    return render_template('edit.html', title=f'Edit {config.name}', form=form, config=config)
+    return render_template('edit_config.html', title=f'Edit {config.name}', form=form, config=config)
 
 
 @app.route('/copy/<int:config_id>', methods=['GET', 'POST'])
@@ -99,11 +91,48 @@ def copy_config(config_id):
     return redirect(url_for('configs'))
 
 
+@app.route('/delete-config/<int:config_id>', methods=['GET', 'POST'])
+def delete_config(config_id):
+    config = models.PlugConfig.query.get(config_id)
+    db.session.delete(config)
+    db.session.commit()
+    flash(f'Deleted {config.name}!', 'success')
+    return redirect(url_for('configs'))
+
+
 @app.route('/start-job', methods=['GET', 'POST'])
 def start_job():
     config_id = request.form.get('config_select')
-    print(f'Starting job for config {config_id}')
+    config = models.PlugConfig.query.get(config_id)
+    if models.PlugJob.query.filter_by(config_id=config_id, status='Started').first():
+        flash(f'Job for {config.name} already started!', 'danger')
+        return redirect(url_for('jobs'))
+    job = models.PlugJob(config_id=config_id, start_time=datetime.now())
+    db.session.add(job)
+    db.session.commit()
+    flash(f'Started job for {config.name}!', 'success')
     return redirect(url_for('jobs'))
+
+
+@app.route('/stop-job/<int:job_id>', methods=['GET', 'POST'])
+def stop_job(job_id):
+    job = models.PlugJob.query.get(job_id)
+    if not job.active():
+        flash(f'Job for {job.config.name} already stopped!', 'danger')
+        return redirect(url_for('jobs'))
+    job.status = models.StatusEnum.stopped
+    job.end_time = datetime.now()
+    job.duration = round((job.end_time - job.start_time).total_seconds() / 60, 2)
+    db.session.commit()
+    flash(f'Stopped job for {job.config.name}!', 'success')
+    return redirect(url_for('jobs'))
+
+
+@app.route('/view-job/<int:job_id>', methods=['GET', 'POST'])
+def view_job(job_id):
+    job = models.PlugJob.query.get(job_id)
+    return render_template('view_job.html', title=f'Job {job.id}', job=job)
+
 
 # @app.route('/test_wave')
 # def test_wave():
