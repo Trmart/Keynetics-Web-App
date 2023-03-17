@@ -11,11 +11,6 @@ from app import app, db, models, forms
 # from aquarium.src.fredpi.fredpi import interface
 
 
-@app.route('/')
-def home():
-    return render_template('home.html', title='Home')
-
-
 @app.route('/about')
 def about():
     return render_template('about.html', title='About')
@@ -37,11 +32,11 @@ def configs():
         db.session.add(config)
         db.session.commit()
         flash(f'Added {config.name}!', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('configs'))
     return render_template('configs.html', title='Configs', form=form, configs=models.PlugConfig.query.all())
 
 
-@app.route('/jobs', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def jobs():
     return render_template('jobs.html', title='Jobs', configs=models.PlugConfig.query.all())
 
@@ -84,6 +79,24 @@ def edit_config(config_id):
         form.vertical_gap.data = config.vertical_gap
         form.slot_gap.data = config.slot_gap
     return render_template('edit.html', title=f'Edit {config.name}', form=form, config=config)
+
+
+@app.route('/copy/<int:config_id>', methods=['GET', 'POST'])
+def copy_config(config_id):
+    config = models.PlugConfig.query.get(config_id)
+    new_config = models.PlugConfig(
+        name=f'{config.name} (copy)',
+        cure_profile=config.cure_profile,
+        horizontal_offset=config.horizontal_offset,
+        vertical_offset=config.vertical_offset,
+        horizontal_gap=config.horizontal_gap,
+        vertical_gap=config.vertical_gap,
+        slot_gap=config.slot_gap
+    )
+    db.session.add(new_config)
+    db.session.commit()
+    flash(f'Added {new_config.name}!', 'success')
+    return redirect(url_for('configs'))
 
 
 @app.route('/start-job', methods=['GET', 'POST'])

@@ -3,7 +3,6 @@
 {% block content %}
   <ul class="nav nav-pills nav-justified">
     <li class="nav-item">
-      <a class="nav-link h5" href="{{ url_for('home') }}">Home</a>
       <li class="nav-item">
         <a class="nav-link h5" href="{{ url_for('jobs') }}">Jobs</a>
       </li>
@@ -117,6 +116,7 @@
     </fieldset>
     <div class="form-group">
       {{ form.submit(class="btn btn-outline-primary") }}
+      <a class="btn btn-outline-danger" href="{{ url_for('configs') }}">Cancel</a>
     </div>
     <div class="border-top pt-1">
       <small class="text-muted">

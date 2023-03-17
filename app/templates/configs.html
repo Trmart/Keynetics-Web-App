@@ -3,7 +3,6 @@
 {% block content %}
   <ul class="nav nav-pills nav-justified">
     <li class="nav-item">
-      <a class="nav-link h5" href="{{ url_for('home') }}">Home</a>
       <li class="nav-item">
         <a class="nav-link h5" href="{{ url_for('jobs') }}">Jobs</a>
       </li>
@@ -36,15 +35,18 @@
     <tbody>
        {% for config in configs %}
           <tr>
-             <td class="col-md-2">{{ config.name }}</td>
-             <td class="col-md-2">{{ config.cure_profile }}</td>
-             <td class="col-md-1">{{ config.horizontal_offset }}</td>
-             <td class="col-md-1">{{ config.vertical_offset }}</td>
-             <td class="col-md-1">{{ config.horizontal_gap }}</td>
-             <td class="col-md-1">{{ config.vertical_gap }}</td>
-             <td class="col-md-1">{{ config.slot_gap }}</td>
-             <td class="col-md-1"><a class="btn btn-outline-primary btn-sm float-right" href="{{ url_for('edit_config', config_id=config.id) }}">Edit</a></td>
-             <td class="col-md-1"><a class="btn btn-outline-danger btn-sm float-right" href="{{ url_for('delete_config', config_id=config.id) }}">Delete</a></td>
+            <td class="col-md-2">{{ config.name }}</td>
+            <td class="col-md-2">{{ config.cure_profile }}</td>
+            <td class="col-md-1">{{ config.horizontal_offset }}</td>
+            <td class="col-md-1">{{ config.vertical_offset }}</td>
+            <td class="col-md-1">{{ config.horizontal_gap }}</td>
+            <td class="col-md-1">{{ config.vertical_gap }}</td>
+            <td class="col-md-1">{{ config.slot_gap }}</td>
+            <td>
+              <a class="btn btn-outline-primary btn-sm mr-2" href="{{ url_for('edit_config', config_id=config.id) }}">Edit</a>
+              <a class="btn btn-outline-primary btn-sm mr-2" href="{{ url_for('copy_config', config_id=config.id) }}">Copy</a>
+              <a class="btn btn-outline-danger btn-sm mr-2" href="{{ url_for('delete_config', config_id=config.id) }}">Delete</a>
+            </td>
           </tr>
        {% endfor %}
     </tbody>
@@ -54,7 +56,6 @@
   <form method="POST" action="">
     {{ form.hidden_tag() }}
     <fieldset class="form-group">
-      <!-- <legend class="border-bottom mb-2">Create New Config</legend> -->
       <div class="form-group">
         {{ form.name.label(class="form-control-label") }}
         {% if form.name.errors %}

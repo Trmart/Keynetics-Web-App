@@ -3,7 +3,6 @@
 {% block content %}
   <ul class="nav nav-pills nav-justified">
     <li class="nav-item">
-      <a class="nav-link h5" href="{{ url_for('home') }}">Home</a>
       <li class="nav-item">
         <a class="nav-link h5 active" href="{{ url_for('jobs') }}">Jobs</a>
       </li>
@@ -18,16 +17,6 @@
       </li>
     </li>
   </ul>
-
-  <!-- <h1 class="mt-3">Start Job</h1>
-  <form class="form-inline" method="POST" action="{{ url_for('start_job') }}">
-    <select name="name" method="GET" action="/">
-      {% for config in configs %}
-        <option value={{config.id}}>{{config.name}}</option>
-      {% endfor %}
-    </select>
-  </form>
-  <a class="btn btn-outline-primary" href="{{ url_for('start_job') }}">Start</a> -->
 
   <h1 class="mt-3">Start Job</h1>
   <form class="form-inline" method="POST" action="{{ url_for('start_job') }}">
