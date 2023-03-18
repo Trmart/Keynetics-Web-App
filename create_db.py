@@ -4,7 +4,7 @@ This should only be run once during setup or in case of database
 deletion. Run the file itself with `python create_db.py`.
 
 '''
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 
 from app import app, db, models
@@ -17,6 +17,7 @@ def create_db():
             os.remove(db_path)
 
         db.create_all()
+
         plug1 = models.PlugConfig(
             name='8-Pin Plug',
             cure_profile='0100101101',
@@ -51,20 +52,44 @@ def create_db():
 
         job1 = models.PlugJob(
             config_id=plug1.id,
-            start_time=datetime.now().replace(minute=datetime.now().minute - 10),
+            start_time=datetime.now().replace(minute=10),
         )
-        job1.end_time = datetime.now()
+        job1.end_time = job1.start_time + timedelta(minutes=23)
         job1.duration = round((job1.end_time - job1.start_time).total_seconds() / 60, 2)
         job1.status = models.StatusEnum.finished
         db.session.add(job1)
         job2 = models.PlugJob(
             config_id=plug2.id,
-            start_time=datetime.now().replace(minute=datetime.now().minute - 20),
+            start_time=datetime.now().replace(minute=20),
         )
-        job2.end_time = datetime.now()
+        job2.end_time = job2.start_time + timedelta(minutes=5)
         job2.duration = round((job2.end_time - job2.start_time).total_seconds() / 60, 2)
         job2.status = models.StatusEnum.finished
         db.session.add(job2)
+        job3 = models.PlugJob(
+            config_id=plug3.id,
+            start_time=datetime.now().replace(minute=2),
+        )
+        job3.end_time = job3.start_time + timedelta(minutes=7)
+        job3.duration = round((job3.end_time - job3.start_time).total_seconds() / 60, 2)
+        job3.status = models.StatusEnum.failed
+        db.session.add(job3)
+        job4 = models.PlugJob(
+            config_id=plug1.id,
+            start_time=datetime.now().replace(minute=13),
+        )
+        job4.end_time = job4.start_time + timedelta(minutes=8)
+        job4.duration = round((job4.end_time - job4.start_time).total_seconds() / 60, 2)
+        job4.status = models.StatusEnum.stopped
+        db.session.add(job4)
+        job5 = models.PlugJob(
+            config_id=plug2.id,
+            start_time=datetime.now().replace(minute=23),
+        )
+        job5.end_time = job5.start_time + timedelta(minutes=10)
+        job5.duration = round((job5.end_time - job5.start_time).total_seconds() / 60, 2)
+        job5.status = models.StatusEnum.started
+
         db.session.commit()
 
 
