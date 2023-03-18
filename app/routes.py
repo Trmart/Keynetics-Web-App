@@ -4,9 +4,14 @@ Maps the webpage URLs to specific functions which handle page logic and
 rendering.
 
 '''
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, Response, request
+import matplotlib
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
 
 from datetime import datetime
+import io
+import random
 
 from app import app, db, models, forms
 # from aquarium.src.fredpi.fredpi import interface
@@ -61,21 +66,21 @@ def insights():
         return "{:.2f}".format(max(job.duration for job in jobs if job.duration is not None) if jobs else 0)
 
     all = models.PlugJob.query.all()
-    started = models.PlugJob.query.filter_by(status=models.StatusEnum.started).all()
+    # started = models.PlugJob.query.filter_by(status=models.StatusEnum.started).all()
     stopped = models.PlugJob.query.filter_by(status=models.StatusEnum.stopped).all()
     failed = models.PlugJob.query.filter_by(status=models.StatusEnum.failed).all()
     finished = models.PlugJob.query.filter_by(status=models.StatusEnum.finished).all()
     analytics = {
-        'started_jobs': len(started),
-        'stopped_jobs': len(stopped),
-        'failed_jobs': len(failed),
-        'finished_jobs': len(finished),
-        'all_jobs': len(all),
+        # 'started_jobs': len(started),
+        # 'stopped_jobs': len(stopped),
+        # 'failed_jobs': len(failed),
+        # 'finished_jobs': len(finished),
+        # 'all_jobs': len(all),
 
-        'started_jobs_rate': 0,
-        'stopped_jobs_rate': 0,
-        'failed_jobs_rate': 0,
-        'finished_jobs_rate': 0,
+        # 'started_jobs_rate': 0,
+        # 'stopped_jobs_rate': 0,
+        # 'failed_jobs_rate': 0,
+        # 'finished_jobs_rate': 0,
 
         'stopped_jobs_duration': calc_total_duration(stopped),
         'failed_jobs_duration': calc_total_duration(failed),
@@ -107,13 +112,11 @@ def insights():
         'finished_jobs_max': calc_max_duration(finished),
         'all_jobs_max': calc_max_duration(all),
     }
-    analytics['started_jobs_rate'] = "{:.2f}".format(analytics['started_jobs'] / analytics['all_jobs'] * 100)
-    analytics['stopped_jobs_rate'] = "{:.2f}".format(analytics['stopped_jobs'] / analytics['all_jobs'] * 100)
-    analytics['failed_jobs_rate'] = "{:.2f}".format(analytics['failed_jobs'] / analytics['all_jobs'] * 100)
-    analytics['finished_jobs_rate'] = "{:.2f}".format(analytics['finished_jobs'] / analytics['all_jobs'] * 100)
-    job_ids = [job.id for job in all]
-    durations = [job.duration for job in all if job.duration is not None]
-    return render_template('insights.html', page='insights', title='Insights', analytics=analytics, job_ids=job_ids, durations=durations)
+    # analytics['started_jobs_rate'] = "{:.2f}".format(analytics['started_jobs'] / analytics['all_jobs'] * 100)
+    # analytics['stopped_jobs_rate'] = "{:.2f}".format(analytics['stopped_jobs'] / analytics['all_jobs'] * 100)
+    # analytics['failed_jobs_rate'] = "{:.2f}".format(analytics['failed_jobs'] / analytics['all_jobs'] * 100)
+    # analytics['finished_jobs_rate'] = "{:.2f}".format(analytics['finished_jobs'] / analytics['all_jobs'] * 100)
+    return render_template('insights.html', page='insights', title='Insights', analytics=analytics)
 
 
 @app.route('/help')
@@ -211,6 +214,51 @@ def stop_job(job_id):
 def view_job(job_id):
     job = models.PlugJob.query.get(job_id)
     return render_template('view_job.html', page='jobs', title=f'Job {job.id}', job=job)
+
+
+@app.route('/durations-plot.png')
+def durations_plot():
+    fig = create_durations_plot()
+    output = io.BytesIO()
+    FigureCanvas(fig).print_png(output)
+    return Response(output.getvalue(), mimetype='image/png')
+
+
+@app.route('/status-plot.png')
+def status_plot():
+    fig = create_status_plot()
+    output = io.BytesIO()
+    FigureCanvas(fig).print_png(output)
+    return Response(output.getvalue(), mimetype='image/png')
+
+
+def create_durations_plot():
+    all = models.PlugJob.query.all()
+    all = [job for job in all if job.duration is not None]
+    job_ids = [job.id for job in all]
+    durations = [job.duration for job in all]
+
+    fig = Figure()
+    axis = fig.add_subplot(1, 1, 1)
+    axis.bar(job_ids, durations)
+    axis.set_title('Duration of Completed Jobs')
+    axis.set_xlabel('Job ID')
+    axis.set_ylabel('Duration (min)')
+    axis.get_xaxis().set_major_formatter(matplotlib.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
+    axis.get_xaxis().set_major_locator(matplotlib.ticker.MaxNLocator(integer=True))
+    return fig
+
+
+def create_status_plot():
+    started = models.PlugJob.query.filter_by(status=models.StatusEnum.started).count()
+    stopped = models.PlugJob.query.filter_by(status=models.StatusEnum.stopped).count()
+    failed = models.PlugJob.query.filter_by(status=models.StatusEnum.failed).count()
+    finished = models.PlugJob.query.filter_by(status=models.StatusEnum.finished).count()
+    fig = Figure()
+    axis = fig.add_subplot(1, 1, 1)
+    axis.pie([started, stopped, failed, finished], labels=['Started', 'Stopped', 'Failed', 'Finished'], autopct='%1.1f%%')
+    axis.set_title('Status of Jobs')
+    return fig
 
 
 # @app.route('/test_wave')
