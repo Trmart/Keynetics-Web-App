@@ -34,17 +34,94 @@ def configs():
         db.session.commit()
         flash(f'Added {config.name}!', 'success')
         return redirect(url_for('configs'))
-    return render_template('configs.html', title='Configs', form=form, configs=models.PlugConfig.query.all())
+    return render_template('configs.html', page='configs', title='Configs', form=form, configs=models.PlugConfig.query.all())
+
+
+@app.route('/insights')
+def insights():
+    def calc_total_duration(jobs):
+        return "{:.2f}".format(sum(job.duration for job in jobs if job.duration is not None))
+
+    def calc_median_duration(jobs):
+        # Remove None values from jobs
+        ended_jobs = [job for job in jobs if job.duration is not None]
+        ended_jobs = sorted(ended_jobs, key=lambda job: job.duration)
+        return "{:.2f}".format(ended_jobs[len(ended_jobs) // 2].duration if ended_jobs else 0)
+
+    def calc_mean_duration(jobs):
+        return "{:.2f}".format(sum(job.duration for job in jobs if job.duration is not None) / len(jobs) if jobs else 0)
+
+    def calc_std_dev_duration(jobs):
+        return "{:.2f}".format((sum((job.duration - sum(job.duration for job in jobs if job.duration is not None) / len(jobs)) ** 2 for job in jobs if job.duration is not None) / len(jobs)) ** 0.5 if jobs else 0)
+
+    def calc_min_duration(jobs):
+        return "{:.2f}".format(min(job.duration for job in jobs if job.duration is not None) if jobs else 0)
+
+    def calc_max_duration(jobs):
+        return "{:.2f}".format(max(job.duration for job in jobs if job.duration is not None) if jobs else 0)
+
+    all = models.PlugJob.query.all()
+    started = models.PlugJob.query.filter_by(status=models.StatusEnum.started).all()
+    stopped = models.PlugJob.query.filter_by(status=models.StatusEnum.stopped).all()
+    failed = models.PlugJob.query.filter_by(status=models.StatusEnum.failed).all()
+    finished = models.PlugJob.query.filter_by(status=models.StatusEnum.finished).all()
+    analytics = {
+        'started_jobs': len(started),
+        'stopped_jobs': len(stopped),
+        'failed_jobs': len(failed),
+        'finished_jobs': len(finished),
+        'all_jobs': len(all),
+
+        'started_jobs_rate': 0,
+        'stopped_jobs_rate': 0,
+        'failed_jobs_rate': 0,
+        'finished_jobs_rate': 0,
+
+        'stopped_jobs_duration': calc_total_duration(stopped),
+        'failed_jobs_duration': calc_total_duration(failed),
+        'finished_jobs_duration': calc_total_duration(finished),
+        'all_jobs_duration': calc_total_duration(all),
+
+        'stopped_jobs_median': calc_median_duration(stopped),
+        'failed_jobs_median': calc_median_duration(failed),
+        'finished_jobs_median': calc_median_duration(finished),
+        'all_jobs_median': calc_median_duration(all),
+
+        'stopped_jobs_mean': calc_mean_duration(stopped),
+        'failed_jobs_mean': calc_mean_duration(failed),
+        'finished_jobs_mean': calc_mean_duration(finished),
+        'all_jobs_mean': calc_mean_duration(all),
+
+        'stopped_jobs_std_dev': calc_std_dev_duration(stopped),
+        'failed_jobs_std_dev': calc_std_dev_duration(failed),
+        'finished_jobs_std_dev': calc_std_dev_duration(finished),
+        'all_jobs_std_dev': calc_std_dev_duration(all),
+
+        'stopped_jobs_min': calc_min_duration(stopped),
+        'failed_jobs_min': calc_min_duration(failed),
+        'finished_jobs_min': calc_min_duration(finished),
+        'all_jobs_min': calc_min_duration(all),
+
+        'stopped_jobs_max': calc_max_duration(stopped),
+        'failed_jobs_max': calc_max_duration(failed),
+        'finished_jobs_max': calc_max_duration(finished),
+        'all_jobs_max': calc_max_duration(all),
+    }
+    analytics['started_jobs_rate'] = "{:.2f}".format(analytics['started_jobs'] / analytics['all_jobs'] * 100)
+    analytics['stopped_jobs_rate'] = "{:.2f}".format(analytics['stopped_jobs'] / analytics['all_jobs'] * 100)
+    analytics['failed_jobs_rate'] = "{:.2f}".format(analytics['failed_jobs'] / analytics['all_jobs'] * 100)
+    analytics['finished_jobs_rate'] = "{:.2f}".format(analytics['finished_jobs'] / analytics['all_jobs'] * 100)
+    return render_template('insights.html', page='insights', title='Insights', analytics=analytics)
 
 
 @app.route('/help')
 def help():
-    return render_template('help.html', title='Help')
+    return render_template('help.html', page='help', title='Help')
 
 
 @app.route('/about')
 def about():
-    return render_template('about.html', title='About')
+    return render_template('about.html', page='about', title='About')
 
 
 @app.route('/edit/<int:config_id>', methods=['GET', 'POST'])
@@ -70,7 +147,7 @@ def edit_config(config_id):
         form.horizontal_gap.data = config.horizontal_gap
         form.vertical_gap.data = config.vertical_gap
         form.slot_gap.data = config.slot_gap
-    return render_template('edit_config.html', title=f'Edit {config.name}', form=form, config=config)
+    return render_template('edit_config.html', page='configs', title=f'Edit {config.name}', form=form, config=config)
 
 
 @app.route('/copy/<int:config_id>', methods=['GET', 'POST'])
@@ -131,7 +208,7 @@ def stop_job(job_id):
 @app.route('/view-job/<int:job_id>', methods=['GET', 'POST'])
 def view_job(job_id):
     job = models.PlugJob.query.get(job_id)
-    return render_template('view_job.html', title=f'Job {job.id}', job=job)
+    return render_template('view_job.html', page='jobs', title=f'Job {job.id}', job=job)
 
 
 # @app.route('/test_wave')

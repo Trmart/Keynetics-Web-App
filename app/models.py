@@ -41,6 +41,7 @@ class StatusEnum(Enum):
     curing = 'Curing'
     stopped = 'Stopped'
     finished = 'Finished'
+    failed = 'Failed'
 
 
 class PlugJob(db.Model):

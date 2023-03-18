@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-3 mt-3">
+      <h1 class="text-center">Jobs</h1>
+      <table class="table table-dark">
+        <thead>
+          <tr>
+            <th scope="col">Status</th>
+            <th scope="col">Count</th>
+            <th scope="col">Rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Started</td>
+            <td class="text-right">{{ analytics['started_jobs'] }}</td>
+            <td class="text-right">{{ analytics['started_jobs_rate'] }}%</td>
+          </tr>
+          <tr>
+            <td>Finished</td>
+            <td class="text-right">{{ analytics['finished_jobs'] }}</td>
+            <td class="text-right">{{ analytics['finished_jobs_rate'] }}%</td>
+          </tr>
+          <tr>
+            <td>Stopped</td>
+            <td class="text-right">{{ analytics['stopped_jobs'] }}</td>
+            <td class="text-right">{{ analytics['stopped_jobs_rate'] }}%</td>
+          </tr>
+          <tr>
+            <td>Failed</td>
+            <td class="text-right">{{ analytics['failed_jobs'] }}</td>
+            <td class="text-right">{{ analytics['failed_jobs_rate'] }}%</td>
+          </tr>
+          <tr>
+            <td>Total</td>
+            <td class="text-right">{{ analytics['all_jobs'] }}</td>
+            <td class="text-right">100.00%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-md-6 mt-3">
+      <h1 class="text-center">Efficiency</h1>
+      <table class="table table-dark">
+        <thead>
+          <tr>
+            <th scope="col">Status</th>
+            <th scope="col">Median</th>
+            <th scope="col">Mean</th>
+            <th scope="col">Std. Dev.</th>
+            <th scope="col">Best</th>
+            <th scope="col">Worst</th>
+            <th scope="col">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Finished</td>
+            <td>{{ analytics['finished_jobs_median'] }}</td>
+            <td>{{ analytics['finished_jobs_mean'] }}</td>
+            <td>{{ analytics['finished_jobs_std_dev'] }}</td>
+            <td>{{ analytics['finished_jobs_min'] }}</td>
+            <td>{{ analytics['finished_jobs_max'] }}</td>
+            <td>{{ analytics['finished_jobs_duration'] }}</td>
+          </tr>
+          <tr>
+            <td>Stopped</td>
+            <td>{{ analytics['stopped_jobs_median'] }}</td>
+            <td>{{ analytics['stopped_jobs_mean'] }}</td>
+            <td>{{ analytics['stopped_jobs_std_dev'] }}</td>
+            <td>{{ analytics['stopped_jobs_min'] }}</td>
+            <td>{{ analytics['stopped_jobs_max'] }}</td>
+            <td>{{ analytics['stopped_jobs_duration'] }}</td>
+          </tr>
+          <tr>
+            <td>Failed</td>
+            <td>{{ analytics['failed_jobs_median'] }}</td>
+            <td>{{ analytics['failed_jobs_mean'] }}</td>
+            <td>{{ analytics['failed_jobs_std_dev'] }}</td>
+            <td>{{ analytics['failed_jobs_min'] }}</td>
+            <td>{{ analytics['failed_jobs_max'] }}</td>
+            <td>{{ analytics['failed_jobs_duration'] }}</td>
+          </tr>
+          <tr>
+            <td>All</td>
+            <td>{{ analytics['all_jobs_median'] }}</td>
+            <td>{{ analytics['all_jobs_mean'] }}</td>
+            <td>{{ analytics['all_jobs_std_dev'] }}</td>
+            <td>{{ analytics['all_jobs_min'] }}</td>
+            <td>{{ analytics['all_jobs_max'] }}</td>
+            <td>{{ analytics['all_jobs_duration'] }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-md-3 mt-3">
+      <h1 class="text-center">Stats</h1>
+  </div>
+{% endblock %}

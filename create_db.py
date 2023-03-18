@@ -4,6 +4,7 @@ This should only be run once during setup or in case of database
 deletion. Run the file itself with `python create_db.py`.
 
 '''
+from datetime import datetime
 import os
 
 from app import app, db, models
@@ -46,6 +47,24 @@ def create_db():
             slot_gap=4
         )
         db.session.add(plug3)
+        db.session.commit()
+
+        job1 = models.PlugJob(
+            config_id=plug1.id,
+            start_time=datetime.now().replace(minute=datetime.now().minute - 10),
+        )
+        job1.end_time = datetime.now()
+        job1.duration = round((job1.end_time - job1.start_time).total_seconds() / 60, 2)
+        job1.status = models.StatusEnum.finished
+        db.session.add(job1)
+        job2 = models.PlugJob(
+            config_id=plug2.id,
+            start_time=datetime.now().replace(minute=datetime.now().minute - 20),
+        )
+        job2.end_time = datetime.now()
+        job2.duration = round((job2.end_time - job2.start_time).total_seconds() / 60, 2)
+        job2.status = models.StatusEnum.finished
+        db.session.add(job2)
         db.session.commit()
 
 
