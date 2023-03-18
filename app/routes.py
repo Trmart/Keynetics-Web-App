@@ -115,6 +115,7 @@ def insights():
     analytics['stopped_jobs_rate'] = "{:.2f}".format(analytics['stopped_jobs'] / analytics['all_jobs'] * 100)
     analytics['failed_jobs_rate'] = "{:.2f}".format(analytics['failed_jobs'] / analytics['all_jobs'] * 100)
     analytics['finished_jobs_rate'] = "{:.2f}".format(analytics['finished_jobs'] / analytics['all_jobs'] * 100)
+
     return render_template('insights.html', page='insights', title='Insights', analytics=analytics)
 
 
@@ -231,6 +232,14 @@ def status_plot():
     return Response(output.getvalue(), mimetype='image/png')
 
 
+@app.route('/config-plot.png')
+def config_plot():
+    fig = create_config_plot()
+    output = io.BytesIO()
+    FigureCanvas(fig).print_png(output)
+    return Response(output.getvalue(), mimetype='image/png')
+
+
 def create_durations_plot():
     all = models.PlugJob.query.all()
     all = [job for job in all if job.duration is not None]
@@ -256,8 +265,24 @@ def create_status_plot():
     fig = Figure()
     axis = fig.add_subplot(1, 1, 1)
     axis.pie([started, stopped, failed, finished], labels=['Started', 'Stopped', 'Failed', 'Finished'], autopct='%1.1f%%')
+    axis.patches[3].set_facecolor('#00FF00')
+    axis.patches[2].set_facecolor('#FF0000')
+    axis.patches[1].set_facecolor('#FFFF00')
+    axis.patches[0].set_facecolor('#0000FF')
     axis.set_title('Status of Jobs')
     return fig
+
+
+def create_config_plot():
+    config_counts = {}
+    for config in models.PlugConfig.query.all():
+        config_counts[config.name] = len(models.PlugJob.query.filter_by(config_id=config.id).all())
+    fig = Figure()
+    axis = fig.add_subplot(1, 1, 1)
+    axis.pie(config_counts.values(), labels=config_counts.keys(), autopct='%1.1f%%')
+    axis.set_title('Jobs by Configuration')
+    return fig
+
 
 
 # @app.route('/test_wave')
