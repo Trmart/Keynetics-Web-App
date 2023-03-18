@@ -48,7 +48,6 @@ def insights():
         return "{:.2f}".format(sum(job.duration for job in jobs if job.duration is not None))
 
     def calc_median_duration(jobs):
-        # Remove None values from jobs
         ended_jobs = [job for job in jobs if job.duration is not None]
         ended_jobs = sorted(ended_jobs, key=lambda job: job.duration)
         return "{:.2f}".format(ended_jobs[len(ended_jobs) // 2].duration if ended_jobs else 0)
@@ -66,21 +65,21 @@ def insights():
         return "{:.2f}".format(max(job.duration for job in jobs if job.duration is not None) if jobs else 0)
 
     all = models.PlugJob.query.all()
-    # started = models.PlugJob.query.filter_by(status=models.StatusEnum.started).all()
+    started = models.PlugJob.query.filter_by(status=models.StatusEnum.started).all()
     stopped = models.PlugJob.query.filter_by(status=models.StatusEnum.stopped).all()
     failed = models.PlugJob.query.filter_by(status=models.StatusEnum.failed).all()
     finished = models.PlugJob.query.filter_by(status=models.StatusEnum.finished).all()
     analytics = {
-        # 'started_jobs': len(started),
-        # 'stopped_jobs': len(stopped),
-        # 'failed_jobs': len(failed),
-        # 'finished_jobs': len(finished),
-        # 'all_jobs': len(all),
+        'started_jobs': len(started),
+        'stopped_jobs': len(stopped),
+        'failed_jobs': len(failed),
+        'finished_jobs': len(finished),
+        'all_jobs': len(all),
 
-        # 'started_jobs_rate': 0,
-        # 'stopped_jobs_rate': 0,
-        # 'failed_jobs_rate': 0,
-        # 'finished_jobs_rate': 0,
+        'started_jobs_rate': 0,
+        'stopped_jobs_rate': 0,
+        'failed_jobs_rate': 0,
+        'finished_jobs_rate': 0,
 
         'stopped_jobs_duration': calc_total_duration(stopped),
         'failed_jobs_duration': calc_total_duration(failed),
@@ -112,10 +111,10 @@ def insights():
         'finished_jobs_max': calc_max_duration(finished),
         'all_jobs_max': calc_max_duration(all),
     }
-    # analytics['started_jobs_rate'] = "{:.2f}".format(analytics['started_jobs'] / analytics['all_jobs'] * 100)
-    # analytics['stopped_jobs_rate'] = "{:.2f}".format(analytics['stopped_jobs'] / analytics['all_jobs'] * 100)
-    # analytics['failed_jobs_rate'] = "{:.2f}".format(analytics['failed_jobs'] / analytics['all_jobs'] * 100)
-    # analytics['finished_jobs_rate'] = "{:.2f}".format(analytics['finished_jobs'] / analytics['all_jobs'] * 100)
+    analytics['started_jobs_rate'] = "{:.2f}".format(analytics['started_jobs'] / analytics['all_jobs'] * 100)
+    analytics['stopped_jobs_rate'] = "{:.2f}".format(analytics['stopped_jobs'] / analytics['all_jobs'] * 100)
+    analytics['failed_jobs_rate'] = "{:.2f}".format(analytics['failed_jobs'] / analytics['all_jobs'] * 100)
+    analytics['finished_jobs_rate'] = "{:.2f}".format(analytics['finished_jobs'] / analytics['all_jobs'] * 100)
     return render_template('insights.html', page='insights', title='Insights', analytics=analytics)
 
 
