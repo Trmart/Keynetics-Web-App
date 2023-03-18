@@ -14,7 +14,7 @@ from app import app, db, models, forms
 
 @app.route('/', methods=['GET', 'POST'])
 def jobs():
-    return render_template('jobs.html', title='Jobs', configs=models.PlugConfig.query.all(), jobs=models.PlugJob.query.all())
+    return render_template('jobs.html', page='jobs', title='Jobs', configs=models.PlugConfig.query.all(), jobs=models.PlugJob.query.all())
 
 
 @app.route('/configs', methods=['GET', 'POST'])
@@ -111,7 +111,9 @@ def insights():
     analytics['stopped_jobs_rate'] = "{:.2f}".format(analytics['stopped_jobs'] / analytics['all_jobs'] * 100)
     analytics['failed_jobs_rate'] = "{:.2f}".format(analytics['failed_jobs'] / analytics['all_jobs'] * 100)
     analytics['finished_jobs_rate'] = "{:.2f}".format(analytics['finished_jobs'] / analytics['all_jobs'] * 100)
-    return render_template('insights.html', page='insights', title='Insights', analytics=analytics)
+    job_ids = [job.id for job in all]
+    durations = [job.duration for job in all if job.duration is not None]
+    return render_template('insights.html', page='insights', title='Insights', analytics=analytics, job_ids=job_ids, durations=durations)
 
 
 @app.route('/help')

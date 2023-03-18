@@ -23,15 +23,6 @@
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-12">
-          {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-              {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">
-                  {{ message }}
-                </div>
-              {% endfor %}
-            {% endif %}
-          {% endwith %}
           <h1 class="text-center display-4 keynetics-text">K e y n e t i c s</h1>
           <ul class="nav nav-pills nav-justified">
             {% if page == 'jobs' %}
@@ -80,13 +71,21 @@
               </li>
             {% endif %}
           </ul>
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
           {% block content %}{% endblock %}
         </div>
       </div>
     </main>
 
     <footer class="text-center text-lg-start mt-5">
-      
       <div class="text-center p-3">
         © 2022-2023 Created by
         <a class="text-dark" href="https://www.linkedin.com/in/austin-kugler" target="_blank"><u>Austin Kugler</u></a>,

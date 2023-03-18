@@ -3,7 +3,7 @@
 {% block content %}
   <div class="row">
     <div class="col-md-3 mt-3">
-      <h1 class="text-center">Jobs</h1>
+      <h2 class="text-center">Jobs</h1>
       <table class="table table-dark">
         <thead>
           <tr>
@@ -43,7 +43,7 @@
     </div>
 
     <div class="col-md-6 mt-3">
-      <h1 class="text-center">Efficiency</h1>
+      <h2 class="text-center">Efficiency</h1>
       <table class="table table-dark">
         <thead>
           <tr>
@@ -59,45 +59,42 @@
         <tbody>
           <tr>
             <td>Finished</td>
-            <td>{{ analytics['finished_jobs_median'] }}</td>
-            <td>{{ analytics['finished_jobs_mean'] }}</td>
-            <td>{{ analytics['finished_jobs_std_dev'] }}</td>
-            <td>{{ analytics['finished_jobs_min'] }}</td>
-            <td>{{ analytics['finished_jobs_max'] }}</td>
-            <td>{{ analytics['finished_jobs_duration'] }}</td>
+            <td class="text-right">{{ analytics['finished_jobs_median'] }}</td>
+            <td class="text-right">{{ analytics['finished_jobs_mean'] }}</td>
+            <td class="text-right">{{ analytics['finished_jobs_std_dev'] }}</td>
+            <td class="text-right">{{ analytics['finished_jobs_min'] }}</td>
+            <td class="text-right">{{ analytics['finished_jobs_max'] }}</td>
+            <td class="text-right">{{ analytics['finished_jobs_duration'] }}</td>
           </tr>
           <tr>
             <td>Stopped</td>
-            <td>{{ analytics['stopped_jobs_median'] }}</td>
-            <td>{{ analytics['stopped_jobs_mean'] }}</td>
-            <td>{{ analytics['stopped_jobs_std_dev'] }}</td>
-            <td>{{ analytics['stopped_jobs_min'] }}</td>
-            <td>{{ analytics['stopped_jobs_max'] }}</td>
-            <td>{{ analytics['stopped_jobs_duration'] }}</td>
+            <td class="text-right">{{ analytics['stopped_jobs_median'] }}</td>
+            <td class="text-right">{{ analytics['stopped_jobs_mean'] }}</td>
+            <td class="text-right">{{ analytics['stopped_jobs_std_dev'] }}</td>
+            <td class="text-right">{{ analytics['stopped_jobs_min'] }}</td>
+            <td class="text-right">{{ analytics['stopped_jobs_max'] }}</td>
+            <td class="text-right">{{ analytics['stopped_jobs_duration'] }}</td>
           </tr>
           <tr>
             <td>Failed</td>
-            <td>{{ analytics['failed_jobs_median'] }}</td>
-            <td>{{ analytics['failed_jobs_mean'] }}</td>
-            <td>{{ analytics['failed_jobs_std_dev'] }}</td>
-            <td>{{ analytics['failed_jobs_min'] }}</td>
-            <td>{{ analytics['failed_jobs_max'] }}</td>
-            <td>{{ analytics['failed_jobs_duration'] }}</td>
+            <td class="text-right">{{ analytics['failed_jobs_median'] }}</td>
+            <td class="text-right">{{ analytics['failed_jobs_mean'] }}</td>
+            <td class="text-right">{{ analytics['failed_jobs_std_dev'] }}</td>
+            <td class="text-right">{{ analytics['failed_jobs_min'] }}</td>
+            <td class="text-right">{{ analytics['failed_jobs_max'] }}</td>
+            <td class="text-right">{{ analytics['failed_jobs_duration'] }}</td>
           </tr>
           <tr>
             <td>All</td>
-            <td>{{ analytics['all_jobs_median'] }}</td>
-            <td>{{ analytics['all_jobs_mean'] }}</td>
-            <td>{{ analytics['all_jobs_std_dev'] }}</td>
-            <td>{{ analytics['all_jobs_min'] }}</td>
-            <td>{{ analytics['all_jobs_max'] }}</td>
-            <td>{{ analytics['all_jobs_duration'] }}</td>
+            <td class="text-right">{{ analytics['all_jobs_median'] }}</td>
+            <td class="text-right">{{ analytics['all_jobs_mean'] }}</td>
+            <td class="text-right">{{ analytics['all_jobs_std_dev'] }}</td>
+            <td class="text-right">{{ analytics['all_jobs_min'] }}</td>
+            <td class="text-right">{{ analytics['all_jobs_max'] }}</td>
+            <td class="text-right">{{ analytics['all_jobs_duration'] }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-
-    <div class="col-md-3 mt-3">
-      <h1 class="text-center">Stats</h1>
   </div>
 {% endblock %}
