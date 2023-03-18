@@ -53,8 +53,10 @@
             <td>-</td>
           {% endif %}
 
-          <td>
+          <td scope="col">
             <a href="{{ url_for('view_job', job_id=job.id) }}" class="btn btn-outline-primary mr-1">View</a>
+          </td>
+          <td scope="col">
             {% if job.active() %}
               <a href="{{ url_for('stop_job', job_id=job.id) }}" class="btn btn-outline-danger">Stop</a>
             {% endif %}
