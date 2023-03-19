@@ -2,7 +2,7 @@
 
 {% block content %}
   <h2 class="mt-3">Job #{{ job.id }}</h2>
-  {% include 'table/job.html' %}
-  {% include 'table/config.html' %}
+  {% include 'tables/job.html' %}
+  {% include 'tables/config.html' %}
   <a class="btn btn-outline-primary" href="{{ url_for('jobs') }}">Back</a>
 {% endblock %}

@@ -21,7 +21,7 @@
       <a class="btn btn-outline-danger d-flex justify-content-center mb-2 mt-1" href="{{ url_for('stop_all_jobs') }}">Stop All Jobs</a>
     </div>
   </div>
-  {% include 'table/jobs.html' %}
+  {% include 'tables/jobs.html' %}
 
   <div class="d-flex justify-content-center">
     {% for page_num in jobs.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}

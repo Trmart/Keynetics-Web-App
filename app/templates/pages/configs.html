@@ -7,7 +7,7 @@
       <a class="btn btn-outline-primary d-flex justify-content-center mb-2 mt-1" href="{{ url_for('create_config') }}">Add Config</a>
     </div>
   </div>
-  {% include 'table/configs.html' %}
+  {% include 'tables/configs.html' %}
 
   <div class="d-flex justify-content-center">
     {% for page_num in configs.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
