@@ -6,10 +6,12 @@ rendering.
 '''
 from flask import render_template, flash, redirect, url_for, Response, request
 import matplotlib
+import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 
 from datetime import datetime
+from datetime import timedelta
 import io
 import random
 
@@ -304,21 +306,19 @@ def config_plot():
 
 
 def create_durations_plot():
-    all = models.PlugJob.query.all()
-    all = [job for job in all if job.duration is not None]
-    job_ids = [job.id for job in all]
+    all = models.PlugJob.query.filter(models.PlugJob.duration.isnot(None)).order_by(models.PlugJob.end_time).limit(100).all()
+    end_times = [job.end_time.strftime('%H:%M:%S') for job in all]
     durations = [job.duration for job in all]
 
     fig = Figure()
     axis = fig.add_subplot(1, 1, 1)
-    axis.bar(job_ids, durations)
-    axis.set_title('Duration of Completed Jobs')
-    axis.set_xlabel('Job ID')
+    axis.bar(end_times, durations)
+    axis.set_title('Duration of Last 100 Completed Jobs')
+    axis.set_xlabel('End Time')
     axis.set_ylabel('Duration (min)')
-    axis.get_xaxis().set_major_formatter(matplotlib.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
-    axis.get_xaxis().set_major_locator(matplotlib.ticker.MaxNLocator(integer=True))
-    fig.set_size_inches(10, 5)
-    fig.subplots_adjust(left=0.07, right=0.97, top=0.93, bottom=0.1)
+    fig.set_size_inches(10, 7.5)
+    plt.setp(axis.get_xticklabels(), rotation=45, horizontalalignment='right')
+    # axis.set_xlim([end_times[0], end_times[-1]])
     return fig
 
 
