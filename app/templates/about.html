@@ -1,63 +1,55 @@
 {% extends "base.html" %}
 
 {% block content %}
-   <!-- About section
-   <section id="about">
-   <div class="container px-4">
-         <div class="row gx-4 justify-content-center">
-            <div class="col-lg-8">
-               <h2>About The Keynetics Robotics KeyAssembler</h2>
-               <p class="lead">This is a University of Idaho Senior Engineering Capstone Design Project</p>
-               <p>This web app will allow customers to create jobs for the MyCobot robot arm to perform.
-                  Customers will send a coding profile and quantity to the MyCobot robot arm.
-                  The MyCobot robot arm will automatically perform the key dispensing and UV curing process. 
-               </p>
-               <ul>
-                     <li>Client: SEL</li>
-                     <li>Objective: Insert blocking keys into molded plugs using a six-axis robot arm</li>
-                     <li>Background: 
-                        <ul>
-                           <li>Existing Method:</li>
-                           <ul>
-                              <li>Manually insert tiny red keys into green molded plugs by hand</li>
-                              <li>Key slots are located on the top of the green plugs</li>
-                              <li>Keys are then broken off of the hexagon production mold</li>
-                           </ul>
-                           <li>Drawbacks:</li>
-                           <ul>
-                              <li>Very Inefficient</li>
-                              <li>Damages the hands of employees</li>
-                              <li>Takes away time from the employee that could be allocated elsewhere</li>
-                           </ul>
-                        </ul>
-                     <li>Value Propositions: 
-                        <ul>
-                           <li>Automate a repetitive, harmful, and boring task. Improving employee job quality</li>
-                           <li>Remove need for molded keys, with the Keynetics UV resin curing prototype</li>
-                           <li>Decrease production time and production costs, due to a more efficient automation process</li>
-                        </ul>
-                     <li>Requirements: 
-                        <ul>
-                           <li>Automate the key insertion process</li>
-                           <li>Maintain or improve the process's existing:</li>
-                           <ul>
-                              <li>Accuracy</li>
-                              <li>Quality</li>
-                              <li>Speed</li>
-                           </ul>
-                           <li>Utilize a six-axis robot similar to those standardized at SEL</li>
-                           <li>Deliver record of notes and design choices to SEL</li>
-                        </ul>
-                     <li>Team Members: 
-                        <ul>
-                           <li>Austin Kugler - Software Engineering</li>
-                           <li>Taylor Martin - Software Engineering</li>
-                           <li>Zach Preston - Software Engineering</li>
-                           <li>John Myers - Mechanical Engineering</li>
-                        </ul>
-               </ul>
-            </div>
-         </div>
-   </div>
-</section> -->
+  <h2 class="mt-3">The Team</h2>
+
+  <p class="lead"><a class="text-light" href="https://github.com/pres1751" target="_blank">Zach Preston</a></p>
+  <p>
+    Zach is a senior majoring in computer science at the University of Idaho.
+  </p>
+  <p>
+    Zach is the team's Glorius Leader and is responsible for coordinating with team mentors, designing the project's architecture, and writing software for the project's robot, Fred.
+  </p>
+
+  <p class="lead"><a class="text-light" href="https://www.linkedin.com/in/austin-kugler" target="_blank">Austin Kugler</a></p>
+  <p>
+    Austin is a senior majoring in computer science at the University of Idaho. His interests include backend, fintech, edtech, and distributed systems. Most recently, he worked as a software development engineer at Amazon Web Services (AWS) in the Amazon Connect organization. Austin's work experience covers system design, fullstack development, decentralized applications, data visualization, distributed systems, and higher education.
+  </p>
+  <p>
+    On the Keynetics team, Austin is responsible for fullstack development of the KeyAssembler web app. He also works with team members to design and implement an architecture for dispensing and curing resin using a 6-axis robot.
+  </p>
+
+  <p class="lead"><a class="text-light" href="https://www.linkedin.com/in/taylor-martin-261542222" target="_blank">Taylor Martin</a></p>
+  <p>
+    Taylor is a senior majoring in computer science at the University of Idaho.
+  </p>
+  <p>
+    As part of the Keynetics team, Taylor develops the KeyAssembler web app. He also works on the project's overall architecture and writes software for the team's robot, Fred.
+  </p>
+
+  <p class="lead"><a class="text-light" href="https://www.linkedin.com/in/john-myers-49638416b" target="_blank">John Myers</a></p>
+  <p>
+    John is a senior majoring in mechanical engineering at the University of Idaho.
+  </p>
+  <p>
+    John's role on the Keynetics team is to design and fabricate physical components used in the project. This includes a plug pallet system, baseplate aligner, and mounts for ultraviolet floodlights.
+  </p>
+
+  <p class="lead text-light">Fred</p>
+  <p>
+    <img src="{{ url_for('static', filename='img/fred.png') }}" alt="Fred" width="208" height="281">
+  </p>
+  <p>
+    Fred is a 6-axis myCobot 320-Pi robot. He is responsible for dispensing, curing resin, and looking cool.
+  </p>
+
+  <h2 class="mt-3">Background</h2>
+  <p class="lead text-light">Existing Method</p>
+
+
+  <h2 class="mt-3">The KeyAssembler</h2>
+  <p class="lead text-light">Robotics Component</p>
+  <p class="lead text-light">Web App Component</p>
+
+  <h2 class="mt-3">Value Proposition</h2>
 {% endblock %}
