@@ -16,13 +16,19 @@
 
   <div class="row justify-content-center mt-3">
     <div class="col-auto">
-      <h2 class="text-center">Jobs</h2>
+      <h2 class="text-center">Efficiency</h2>
       <table class="table table-dark table-responsive">
         <thead>
           <tr>
             <th scope="col">Status</th>
             <th scope="col">Count</th>
             <th scope="col">Rate</th>
+            <th scope="col">Median (m)</th>
+            <th scope="col">Mean (m)</th>
+            <th scope="col">Std. Dev. (m)</th>
+            <th scope="col">Best (m)</th>
+            <th scope="col">Worst (m)</th>
+            <th scope="col">Total</th>
           </tr>
         </thead>
         <tbody>
@@ -30,56 +36,17 @@
             <td>Started</td>
             <td class="text-right">{{ analytics['started_jobs'] }}</td>
             <td class="text-right">{{ analytics['started_jobs_rate'] }}%</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
           </tr>
           <tr>
             <td>Finished</td>
             <td class="text-right">{{ analytics['finished_jobs'] }}</td>
             <td class="text-right">{{ analytics['finished_jobs_rate'] }}%</td>
-          </tr>
-          <tr>
-            <td>Stopped</td>
-            <td class="text-right">{{ analytics['stopped_jobs'] }}</td>
-            <td class="text-right">{{ analytics['stopped_jobs_rate'] }}%</td>
-          </tr>
-          <tr>
-            <td>Failed</td>
-            <td class="text-right">{{ analytics['failed_jobs'] }}</td>
-            <td class="text-right">{{ analytics['failed_jobs_rate'] }}%</td>
-          </tr>
-          <tr>
-            <td>Total</td>
-            <td class="text-right">{{ analytics['all_jobs'] }}</td>
-            <td class="text-right">100.00%</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="col-auto">
-      <h2 class="text-center">Efficiency</h2>
-      <table class="table table-dark table-responsive">
-        <thead>
-          <tr>
-            <th scope="col">Status</th>
-            <th scope="col">Median</th>
-            <th scope="col">Mean</th>
-            <th scope="col">Std. Dev.</th>
-            <th scope="col">Best</th>
-            <th scope="col">Worst</th>
-            <th scope="col">Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Started</td>
-            <td class="text-right">-</td>
-            <td class="text-right">-</td>
-            <td class="text-right">-</td>
-            <td class="text-right">-</td>
-            <td class="text-right">-</td>
-            <td class="text-right">-</td>
-          </tr>
-          <tr>
-            <td>Finished</td>
             <td class="text-right">{{ analytics['finished_jobs_median'] }}</td>
             <td class="text-right">{{ analytics['finished_jobs_mean'] }}</td>
             <td class="text-right">{{ analytics['finished_jobs_std_dev'] }}</td>
@@ -89,6 +56,8 @@
           </tr>
           <tr>
             <td>Stopped</td>
+            <td class="text-right">{{ analytics['stopped_jobs'] }}</td>
+            <td class="text-right">{{ analytics['stopped_jobs_rate'] }}%</td>
             <td class="text-right">{{ analytics['stopped_jobs_median'] }}</td>
             <td class="text-right">{{ analytics['stopped_jobs_mean'] }}</td>
             <td class="text-right">{{ analytics['stopped_jobs_std_dev'] }}</td>
@@ -98,6 +67,8 @@
           </tr>
           <tr>
             <td>Failed</td>
+            <td class="text-right">{{ analytics['failed_jobs'] }}</td>
+            <td class="text-right">{{ analytics['failed_jobs_rate'] }}%</td>
             <td class="text-right">{{ analytics['failed_jobs_median'] }}</td>
             <td class="text-right">{{ analytics['failed_jobs_mean'] }}</td>
             <td class="text-right">{{ analytics['failed_jobs_std_dev'] }}</td>
@@ -107,6 +78,8 @@
           </tr>
           <tr>
             <td>All</td>
+            <td class="text-right">{{ analytics['all_jobs'] }}</td>
+            <td class="text-right">100.00%</td>
             <td class="text-right">{{ analytics['all_jobs_median'] }}</td>
             <td class="text-right">{{ analytics['all_jobs_mean'] }}</td>
             <td class="text-right">{{ analytics['all_jobs_std_dev'] }}</td>
