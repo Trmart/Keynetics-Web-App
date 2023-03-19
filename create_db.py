@@ -44,7 +44,18 @@ def create_db():
             )
             job.end_time = job.start_time + timedelta(minutes=random.randint(5, 30))
             job.duration = round((job.end_time - job.start_time).total_seconds() / 60, 2)
-            job.status = random.choice(list(models.StatusEnum))
+            status_list = list(models.StatusEnum)
+            status_list.remove(models.StatusEnum.started)
+            job.status = random.choice(status_list)
+
+            rand = random.random()
+            if rand < 0.8:
+                job.status = models.StatusEnum.finished
+            elif rand < 0.9:
+                job.status = models.StatusEnum.failed
+            else:
+                job.status = models.StatusEnum.stopped
+
             db.session.add(job)
         db.session.commit()
 
