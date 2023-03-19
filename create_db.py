@@ -39,7 +39,7 @@ def create_db():
         # PlugJob test data
         for i in range(100):
             job = models.PlugJob(
-                config_id=random.randint(1, 5),
+                config_id=random.randint(1, 4),
                 start_time=datetime.now() - timedelta(minutes=random.randint(30, 45)),
             )
             job.end_time = job.start_time + timedelta(minutes=random.randint(5, 30))

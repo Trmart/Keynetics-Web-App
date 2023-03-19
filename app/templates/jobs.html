@@ -66,4 +66,16 @@
       {% endfor %}
     </tbody>
   </table>
+  <div class="d-flex justify-content-center">
+    {% for page_num in jobs.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+      {% if page_num %}
+        {% if jobs.page == page_num %}
+          <a class="btn btn-primary mb-4 mr-2" href="{{ url_for('jobs', page=page_num) }}">{{ page_num }}</a>
+        {% else %}
+          <a class="btn btn-outline-primary mb-4 mr-2" href="{{ url_for('jobs', page=page_num) }}">{{ page_num }}</a>
+        {% endif %}
+      {% else %}
+      {% endif %}
+    {% endfor %}
+  </div>
 {% endblock %}

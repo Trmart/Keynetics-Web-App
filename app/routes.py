@@ -19,13 +19,15 @@ from app import app, db, models, forms
 
 @app.route('/', methods=['GET', 'POST'])
 def jobs():
-    configs = sorted(models.PlugConfig.query.all(), key=lambda config: config.name)
-    jobs = sorted(models.PlugJob.query.all(), key=lambda job: job.start_time, reverse=True)
+    page = request.args.get('page', 1, type=int)
+    jobs = models.PlugJob.query.order_by(models.PlugJob.start_time.desc()).paginate(page=page, per_page=10)
+    configs = models.PlugConfig.query.order_by(models.PlugConfig.name)
     return render_template('jobs.html', page='jobs', title='Jobs', configs=configs, jobs=jobs)
 
 
 @app.route('/configs', methods=['GET', 'POST'])
 def configs():
+    page = request.args.get('page', 1, type=int)
     form = forms.PlugConfigForm()
     if form.validate_on_submit():
         config = models.PlugConfig(
@@ -41,7 +43,7 @@ def configs():
         db.session.commit()
         flash(f'Added {config.name}!', 'success')
         return redirect(url_for('configs'))
-    configs = sorted(models.PlugConfig.query.all(), key=lambda config: config.name)
+    configs = models.PlugConfig.query.order_by(models.PlugConfig.name).paginate(page=page, per_page=5)
     return render_template('configs.html', page='configs', title='Configs', form=form, configs=configs)
 
 
