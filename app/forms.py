@@ -12,7 +12,8 @@ from flask_wtf import FlaskForm
 from wtforms import (
     SubmitField,
     StringField,
-    FloatField
+    FloatField,
+    TextAreaField
 )
 from wtforms.validators import (
     DataRequired,
@@ -29,7 +30,7 @@ class PlugConfigForm(FlaskForm):
     horizontal_gap = FloatField('Horizontal Gap', validators=[DataRequired(), NumberRange(min=0, max=99)])
     vertical_gap = FloatField('Vertical Gap', validators=[DataRequired(), NumberRange(min=0, max=99)])
     slot_gap = FloatField('Slot Gap', validators=[DataRequired(), NumberRange(min=0, max=99)])
-    notes = StringField('Notes', validators=[Length(min=0, max=255)])
+    notes = TextAreaField('Notes', validators=[Length(min=0, max=255)])
     submit = SubmitField('Save')
 
     def __repr__(cls):
@@ -37,8 +38,8 @@ class PlugConfigForm(FlaskForm):
 
 
 class PlugJobForm(FlaskForm):
-    notes = StringField('Note', validators=[DataRequired(), Length(min=1, max=255)])
-    submit = SubmitField('Add Note')
+    notes = TextAreaField('Note', validators=[DataRequired(), Length(min=1, max=255)])
+    submit = SubmitField('Save')
 
     def __repr__(cls):
         return f'AddJobNoteForm(notes={cls.notes.data})'

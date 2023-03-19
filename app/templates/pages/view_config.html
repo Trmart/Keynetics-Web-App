@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2 class="mt-3">Config #{{ config.id }}</h2>
+  {% include 'table/config.html' %}
+  <a class="btn btn-outline-primary" href="{{ url_for('configs') }}">Back</a>
+{% endblock %}

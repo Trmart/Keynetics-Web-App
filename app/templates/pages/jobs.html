@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2 class="mt-3">Start Job</h2>
+  <form class="form-inline" method="POST" action="{{ url_for('start_job') }}">
+    <div class="form-group">
+      <div class="input-group">
+        <select name="config_select" class="selectpicker form-control">
+          {% for config in configs %}
+            <option value="{{ config.id }}">{{ config.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn btn-outline-primary ml-2">Start</button>
+    </div>
+  </form>
+
+  <h2 class="mt-3">Job Control Panel</h2>
+  {% include 'table/jobs.html' %}
+
+  <div class="d-flex justify-content-center">
+    {% for page_num in jobs.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+      {% if page_num %}
+        {% if jobs.page == page_num %}
+          <a class="btn btn-primary mb-3 mr-2" href="{{ url_for('jobs', page=page_num) }}">{{ page_num }}</a>
+        {% else %}
+          <a class="btn btn-outline-primary mb-3 mr-2" href="{{ url_for('jobs', page=page_num) }}">{{ page_num }}</a>
+        {% endif %}
+      {% else %}
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endblock %}

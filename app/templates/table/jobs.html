@@ -1,0 +1,54 @@
+<table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Status</th>
+      <th scope="col">Start Time</th>
+      <th scope="col">End Time</th>
+      <th scope="col">Duration (m)</th>
+      <th scope="col">Actions</th>
+      <th scope="col"></th>
+      <th scope="col"><a class="btn btn-outline-danger btn-sm" href="{{ url_for('stop_all_jobs') }}">Stop All</a></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for job in jobs %}
+      <tr>
+        <td scope="col">{{ job.id }}</td>
+        <td scope="col">{{ job.config.name }}</td>
+        <td scope="col">{{ job.status.value }}</td>
+
+        {% if job.start_time %}
+          <td scope="col">{{ job.start_time.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+        {% else %}
+          <td scope="col">-</td>
+        {% endif %}
+
+        {% if job.end_time %}
+          <td scope="col">{{ job.end_time.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+        {% else %}
+          <td scope="col">-</td>
+        {% endif %}
+
+        {% if job.duration %}
+          <td class="text-right">{{ "%.2f"|format(job.duration) }}</td>
+        {% else %}
+          <td class="text-right">-</td>
+        {% endif %}
+
+        <td scope="col">
+          <a href="{{ url_for('view_job', job_id=job.id) }}" class="btn btn-outline-primary btn-sm">View</a>
+        </td>
+        <td scope="col">
+          <a href="{{ url_for('edit_job', job_id=job.id) }}" class="btn btn-outline-primary btn-sm">Edit</a>
+        </td>
+        <td scope="col">
+          {% if job.is_active() %}
+            <a href="{{ url_for('stop_job', job_id=job.id) }}" class="btn btn-outline-danger btn-sm">Stop</a>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

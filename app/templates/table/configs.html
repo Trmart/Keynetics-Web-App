@@ -1,0 +1,43 @@
+<table class="table table-dark">
+  <thead>
+     <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Cure Profile</th>
+        <th scope="col">Horizontal Offset</th>
+        <th scope="col">Vertical Offset</th>
+        <th scope="col">Horizontal Gap</th>
+        <th scope="col">Vertical Gap</th>
+        <th scope="col">Slot Gap</th>
+        <th scope="col">Actions</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+     </tr>
+  </thead>
+
+  <tbody>
+     {% for config in configs %}
+        <tr>
+          <td scope="col">{{ config.name }}</td>
+          <td scope="col">{{ config.cure_profile }}</td>
+          <td scope="col">{{ config.horizontal_offset }}</td>
+          <td scope="col">{{ config.vertical_offset }}</td>
+          <td scope="col">{{ config.horizontal_gap }}</td>
+          <td scope="col">{{ config.vertical_gap }}</td>
+          <td scope="col">{{ config.slot_gap }}</td>
+          <td scope="col">
+            <a class="btn btn-outline-primary btn-sm" href="{{ url_for('view_config', config_id=config.id) }}">View</a>
+          </td>
+          <td scope="col">
+            <a class="btn btn-outline-primary btn-sm" href="{{ url_for('edit_config', config_id=config.id) }}">Edit</a>
+          </td>
+          <td scope="col">
+            <a class="btn btn-outline-primary btn-sm" href="{{ url_for('copy_config', config_id=config.id) }}">Copy</a>
+          </td>
+          <td scope="col">
+            <a class="btn btn-outline-danger btn-sm" href="{{ url_for('delete_config', config_id=config.id) }}">Delete</a>
+          </td>
+        </tr>
+     {% endfor %}
+  </tbody>
+</table>
