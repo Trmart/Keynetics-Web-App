@@ -29,7 +29,16 @@ class PlugConfigForm(FlaskForm):
     horizontal_gap = FloatField('Horizontal Gap', validators=[DataRequired(), NumberRange(min=0, max=99)])
     vertical_gap = FloatField('Vertical Gap', validators=[DataRequired(), NumberRange(min=0, max=99)])
     slot_gap = FloatField('Slot Gap', validators=[DataRequired(), NumberRange(min=0, max=99)])
+    notes = StringField('Notes', validators=[Length(min=0, max=255)])
     submit = SubmitField('Save')
 
     def __repr__(cls):
         return f'PlugConfigForm(name={cls.name.data}, cure_profile={cls.cure_profile.data})'
+
+
+class PlugJobForm(FlaskForm):
+    notes = StringField('Note', validators=[DataRequired(), Length(min=1, max=255)])
+    submit = SubmitField('Add Note')
+
+    def __repr__(cls):
+        return f'AddJobNoteForm(notes={cls.notes.data})'

@@ -26,6 +26,7 @@
         <th scope="col">End Time</th>
         <th scope="col">Duration (m)</th>
         <th scope="col">Actions</th>
+        <th scope="col"></th>
         <th scope="col"><a class="btn btn-outline-danger" href="{{ url_for('stop_all_jobs') }}">Stop All</a></th>
       </tr>
     </thead>
@@ -56,6 +57,9 @@
 
           <td scope="col">
             <a href="{{ url_for('view_job', job_id=job.id) }}" class="btn btn-outline-primary mr-1">View</a>
+          </td>
+          <td scope="col">
+            <a href="{{ url_for('add_job_notes', job_id=job.id) }}" class="btn btn-outline-primary mr-1">Add Note</a>
           </td>
           <td scope="col">
             {% if job.is_active() %}

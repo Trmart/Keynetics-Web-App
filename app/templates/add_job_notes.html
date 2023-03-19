@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2 class="mt-3">Edit Config</h2>
+  <form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group">
+      <div class="form-group">
+        {{ form.notes.label(class="form-control-label") }}
+        {% if form.notes.errors %}
+          {{ form.notes(class="form-control form-control-lg is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.notes.errors %}
+              <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% else %}
+          {{ form.notes(class="form-control form-control-lg") }}
+        {% endif %}
+      </div>
+    </fieldset>
+    <div class="form-group">
+      {{ form.submit(class="btn btn-outline-primary") }}
+      <a class="btn btn-outline-danger" href="{{ url_for('jobs') }}">Cancel</a>
+    </div>
+  </form>
+{% endblock %}

@@ -164,6 +164,21 @@
             {% endif %}
           </div>
         </div>
+        <div class="col-md-10">
+          <div class="form-group">
+            {{ form.notes.label(class="form-control-label") }}
+            {% if form.notes.errors %}
+              {{ form.notes(class="form-control form-control-lg is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.notes.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.notes(class="form-control form-control-lg") }}
+            {% endif %}
+          </div>
+        </div>
       </div>
     </fieldset>
     <div class="form-group">

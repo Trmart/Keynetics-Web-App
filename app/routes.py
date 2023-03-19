@@ -37,7 +37,8 @@ def configs():
             vertical_offset=form.vertical_offset.data,
             horizontal_gap=form.horizontal_gap.data,
             vertical_gap=form.vertical_gap.data,
-            slot_gap=form.slot_gap.data
+            slot_gap=form.slot_gap.data,
+            notes=form.notes.data
         )
         db.session.add(config)
         db.session.commit()
@@ -146,6 +147,7 @@ def edit_config(config_id):
         config.horizontal_gap = form.horizontal_gap.data
         config.vertical_gap = form.vertical_gap.data
         config.slot_gap = form.slot_gap.data
+        config.notes = form.notes.data
         db.session.commit()
         flash(f'Updated {config.name}!', 'success')
         return redirect(url_for('configs'))
@@ -157,6 +159,7 @@ def edit_config(config_id):
         form.horizontal_gap.data = config.horizontal_gap
         form.vertical_gap.data = config.vertical_gap
         form.slot_gap.data = config.slot_gap
+        form.notes.data = config.notes
     return render_template('edit_config.html', page='configs', title=f'Edit {config.name}', form=form, config=config)
 
 
@@ -170,7 +173,8 @@ def copy_config(config_id):
         vertical_offset=config.vertical_offset,
         horizontal_gap=config.horizontal_gap,
         vertical_gap=config.vertical_gap,
-        slot_gap=config.slot_gap
+        slot_gap=config.slot_gap,
+        notes=config.notes
     )
     db.session.add(new_config)
     db.session.commit()
@@ -232,6 +236,20 @@ def stop_all_jobs():
 def view_job(job_id):
     job = models.PlugJob.query.get(job_id)
     return render_template('view_job.html', page='jobs', title=f'Job {job.id}', job=job)
+
+
+@app.route('/add-job-notes/<int:job_id>', methods=['GET', 'POST'])
+def add_job_notes(job_id):
+    job = models.PlugJob.query.get(job_id)
+    form = forms.PlugJobForm()
+    if form.validate_on_submit():
+        job.notes = form.notes.data
+        db.session.commit()
+        flash(f'Added notes to job {job.id}!', 'success')
+        return redirect(url_for('jobs'))
+    else:
+        form.notes.data = job.notes
+    return render_template('add_job_notes.html', page='jobs', title=f'Add notes to job {job.id}', form=form, job=job)
 
 
 @app.route('/durations-plot.png')

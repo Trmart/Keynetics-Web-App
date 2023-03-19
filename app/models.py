@@ -21,8 +21,9 @@ class PlugConfig(db.Model):
     horizontal_gap = db.Column(db.Float, nullable=False)
     vertical_gap = db.Column(db.Float, nullable=False)
     slot_gap = db.Column(db.Float, nullable=False)
+    notes = db.Column(db.String(256), nullable=True)
 
-    def __init__(self, name, cure_profile, horizontal_offset, vertical_offset, horizontal_gap, vertical_gap, slot_gap):
+    def __init__(self, name, cure_profile, horizontal_offset, vertical_offset, horizontal_gap, vertical_gap, slot_gap, notes=''):
         self.name = name
         self.cure_profile = cure_profile
         self.horizontal_offset = horizontal_offset
@@ -30,6 +31,7 @@ class PlugConfig(db.Model):
         self.horizontal_gap = horizontal_gap
         self.vertical_gap = vertical_gap
         self.slot_gap = slot_gap
+        self.notes = notes
 
     def __repr__(self):
         return f'PlugConfig(id={self.id}, name={self.name}, cure_profile={self.cure_profile})'
@@ -52,10 +54,12 @@ class PlugJob(db.Model):
     start_time = db.Column(db.DateTime, nullable=True)
     end_time = db.Column(db.DateTime, nullable=True)
     duration = db.Column(db.Float, nullable=True)
+    notes = db.Column(db.String(256), nullable=True)
 
-    def __init__(self, config_id, start_time):
+    def __init__(self, config_id, start_time, notes=''):
         self.config_id = config_id
         self.start_time = start_time
+        self.notes = notes
 
     def __repr__(self):
         return f'PlugJob(id={self.id}, config_id={self.config_id}, status={self.status})'
