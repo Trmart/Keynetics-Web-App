@@ -22,13 +22,13 @@ def jobs():
     page = request.args.get('page', 1, type=int)
     jobs = models.PlugJob.query.order_by(models.PlugJob.start_time.desc()).paginate(page=page, per_page=10)
     configs = models.PlugConfig.query.order_by(models.PlugConfig.name)
-    return render_template('pages/jobs.html', title='Jobs', configs=configs, jobs=jobs)
+    return render_template('pages/jobs.html', title='Jobs', page='jobs', configs=configs, jobs=jobs)
 
 
 @app.route('/job/<int:job_id>', methods=['GET', 'POST'])
 def view_job(job_id):
     job = models.PlugJob.query.get(job_id)
-    return render_template('pages/view_job.html', title=f'Job #{job.id}', job=job, config=job.config)
+    return render_template('pages/view_job.html', title=f'Job #{job.id}', page='jobs', job=job, config=job.config)
 
 
 @app.route('/add-job-notes/<int:job_id>', methods=['GET', 'POST'])
@@ -38,11 +38,11 @@ def edit_job(job_id):
     if form.validate_on_submit():
         job.notes = form.notes.data
         db.session.commit()
-        flash(f'Added notes to job {job.id}!', 'success')
+        flash(f'Updated {job.id}!', 'success')
         return redirect(url_for('jobs'))
     else:
         form.notes.data = job.notes
-    return render_template('pages/edit_job.html', title=f'Add notes to job {job.id}', form=form, job=job, config=job.config)
+    return render_template('pages/edit_job.html', title=f'Edit Job #{job.id}', page='jobs', form=form, job=job, config=job.config)
 
 
 @app.route('/start-job', methods=['GET', 'POST'])
@@ -106,13 +106,34 @@ def configs():
         flash(f'Added {config.name}!', 'success')
         return redirect(url_for('configs'))
     configs = models.PlugConfig.query.order_by(models.PlugConfig.name).paginate(page=page, per_page=5)
-    return render_template('pages/configs.html', title='Configs', form=form, configs=configs)
+    return render_template('pages/configs.html', title='Configs', page='configs', form=form, configs=configs)
+
+
+@app.route('/create-config/', methods=['GET', 'POST'])
+def create_config():
+    form = forms.PlugConfigForm()
+    if form.validate_on_submit():
+        config = models.PlugConfig(
+            name=form.name.data,
+            cure_profile=form.cure_profile.data,
+            horizontal_offset=form.horizontal_offset.data,
+            vertical_offset=form.vertical_offset.data,
+            horizontal_gap=form.horizontal_gap.data,
+            vertical_gap=form.vertical_gap.data,
+            slot_gap=form.slot_gap.data,
+            notes=form.notes.data
+        )
+        db.session.add(config)
+        db.session.commit()
+        flash(f'Added {config.name}!', 'success')
+        return redirect(url_for('configs'))
+    return render_template('pages/create_config.html', title=f'Create Config', page='configs', form=form)
 
 
 @app.route('/config/<int:config_id>', methods=['GET', 'POST'])
 def view_config(config_id):
     config = models.PlugConfig.query.get(config_id)
-    return render_template('pages/view_config.html', title=f'{config.name}', config=config)
+    return render_template('pages/view_config.html', title=f'{config.name}', page='configs', config=config)
 
 
 @app.route('/edit-config/<int:config_id>', methods=['GET', 'POST'])
@@ -140,7 +161,7 @@ def edit_config(config_id):
         form.vertical_gap.data = config.vertical_gap
         form.slot_gap.data = config.slot_gap
         form.notes.data = config.notes
-    return render_template('pages/edit_config.html', title=f'Edit {config.name}', form=form, config=config)
+    return render_template('pages/edit_config.html', title=f'Edit {config.name}', page='configs', form=form, config=config)
 
 
 @app.route('/copy-config/<int:config_id>', methods=['GET', 'POST'])
@@ -245,17 +266,17 @@ def insights():
     analytics['failed_jobs_rate'] = "{:.2f}".format(analytics['failed_jobs'] / analytics['all_jobs'] * 100)
     analytics['finished_jobs_rate'] = "{:.2f}".format(analytics['finished_jobs'] / analytics['all_jobs'] * 100)
 
-    return render_template('pages/insights.html', title='Insights', analytics=analytics)
+    return render_template('pages/insights.html', title='Insights', page='insights', analytics=analytics)
 
 
 @app.route('/help')
 def help():
-    return render_template('pages/help.html', title='Help')
+    return render_template('pages/help.html', title='Help', page='help')
 
 
 @app.route('/about')
 def about():
-    return render_template('pages/about.html', title='About')
+    return render_template('pages/about.html', title='About', page='about')
 
 
 @app.route('/durations-plot.png')

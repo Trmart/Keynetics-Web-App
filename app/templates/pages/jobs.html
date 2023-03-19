@@ -15,7 +15,12 @@
     </div>
   </form>
 
-  <h2 class="mt-3">Job Control Panel</h2>
+  <h2 class="mt-3">Job Manager</h2>
+  <div class="row">
+    <div class="col-md-12">
+      <a class="btn btn-outline-danger d-flex justify-content-center mb-2 mt-1" href="{{ url_for('stop_all_jobs') }}">Stop All Jobs</a>
+    </div>
+  </div>
   {% include 'table/jobs.html' %}
 
   <div class="d-flex justify-content-center">

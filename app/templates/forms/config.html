@@ -110,26 +110,22 @@
         </div>
       </div>
       <div class="col-md-10">
-        <div class="form-group">
-          {{ form.notes.label(class="form-control-label") }}
-          {% if form.notes.errors %}
-            {{ form.notes(class="form-control form-control-lg is-invalid") }}
-            <div class="invalid-feedback">
-              {% for error in form.notes.errors %}
-                <span>{{ error }}</span>
-              {% endfor %}
-            </div>
-          {% else %}
-            {{ form.notes(class="form-control form-control-lg") }}
-          {% endif %}
-        </div>
+        {{ form.notes.label(class="form-control-label") }}
+        {% if form.notes.errors %}
+          {{ form.notes(class="form-control form-control-lg is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.notes.errors %}
+              <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% else %}
+          {{ form.notes(class="form-control form-control-lg") }}
+          {{ form.submit(class="btn btn-outline-primary mt-2") }}
+          <a class="btn btn-outline-danger mt-2" href="{{ url_for('configs') }}">Cancel</a>
+        {% endif %}
       </div>
     </div>
   </fieldset>
-  <div class="form-group">
-    {{ form.submit(class="btn btn-outline-primary") }}
-    <a class="btn btn-outline-danger" href="{{ url_for('configs') }}">Cancel</a>
-  </div>
   <div class="border-top pt-1">
     <small class="text-muted">
       Unsure on what values to input? <a href="{{ url_for('help') }}">Get Help</a>

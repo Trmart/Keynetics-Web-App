@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2 class="mt-3">Available Configs</h2>
+  <h2 class="mt-3">Config Manager</h2>
+  <div class="row">
+    <div class="col-md-12">
+      <a class="btn btn-outline-primary d-flex justify-content-center mb-2 mt-1" href="{{ url_for('create_config') }}">Add Config</a>
+    </div>
+  </div>
   {% include 'table/configs.html' %}
 
   <div class="d-flex justify-content-center">
@@ -16,7 +21,4 @@
       {% endif %}
     {% endfor %}
   </div>
-
-  <h2 class="mt-3">Create New Config</h2>
-  {% include 'forms/config.html' %}
 {% endblock %}
