@@ -37,10 +37,17 @@ def create_db():
         db.session.commit()
 
         # PlugJob test data
+        started_job = models.PlugJob(
+            config_id=random.randint(1, 4),
+            start_time=datetime.now() - timedelta(minutes=random.randint(30, 45))
+        )
+        db.session.add(started_job)
+        db.session.commit()
+
         for i in range(100):
             job = models.PlugJob(
                 config_id=random.randint(1, 4),
-                start_time=datetime.now() - timedelta(minutes=random.randint(30, 45)),
+                start_time=datetime.now() - timedelta(minutes=random.randint(30, 45))
             )
             job.end_time = job.start_time + timedelta(minutes=random.randint(5, 30))
             job.duration = round((job.end_time - job.start_time).total_seconds() / 60, 2)

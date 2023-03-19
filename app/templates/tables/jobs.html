@@ -17,7 +17,7 @@
       <tr>
         <td scope="col">{{ job.id }}</td>
         <td scope="col">{{ job.config.name }}</td>
-        <td scope="col">{{ job.status.value }}</td>
+        <td scope="col">{{ job.status.value|capitalize }}</td>
 
         {% if job.start_time %}
           <td scope="col">{{ job.start_time.strftime("%Y-%m-%d %H:%M:%S") }}</td>

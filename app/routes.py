@@ -16,7 +16,6 @@ import io
 import random
 
 from app import app, db, models, forms
-# from aquarium.src.fredpi.fredpi import interface
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -51,8 +50,9 @@ def edit_job(job_id):
 def start_job():
     config_id = request.form.get('config_select')
     config = models.PlugConfig.query.get(config_id)
-    if models.PlugJob.query.filter_by(config_id=config_id, status=models.StatusEnum.started).first():
-        flash(f'Job for {config.name} already started!', 'danger')
+    job = models.PlugJob.query.filter_by(status=models.StatusEnum.started).first()
+    if job:
+        flash(f'A job for {job.config.name} is active!', 'danger')
         return redirect(url_for('jobs'))
     job = models.PlugJob(config_id=config_id, start_time=datetime.now())
     db.session.add(job)
@@ -281,6 +281,24 @@ def about():
     return render_template('pages/about.html', title='About', page='about')
 
 
+@app.route('/api', methods=['GET', 'POST'])
+def api():
+    if request.method == 'POST':
+        data = request.get_json(force=True)
+        job = models.PlugJob.query.filter_by(id=data['id']).first()
+        if job:
+            job.status = getattr(models.StatusEnum, data['status'])
+            if job.status == 'Finished' or job.status == 'Failed' or job.status == 'Stopped':
+                job.end_time = datetime.now()
+                job.duration = round((job.end_time - job.start_time).total_seconds() / 60, 2)
+            db.session.commit()
+        return {'response': 200}
+    elif request.method == 'GET':
+        jobs = models.PlugJob.query.filter_by(status=models.StatusEnum.started).all()
+        jobs = [job.to_dict() for job in jobs]
+        return {'jobs': jobs}
+
+
 @app.route('/durations-plot.png')
 def durations_plot():
     fig = create_durations_plot()
@@ -351,15 +369,3 @@ def create_config_plot():
     fig.set_size_inches(5, 4)
     fig.subplots_adjust(left=0, right=1, top=0.93, bottom=0.1)
     return fig
-
-
-# @app.route('/test_wave')
-# def test_wave():
-#     interface.test_wave()
-#     return '<h2>Done!<h2>'
-
-
-# @app.route('/test_pulse')
-# def test_pulse():
-#     interface.test_pulse()
-#     return '<h2>Done!<h2>'

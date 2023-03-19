@@ -36,14 +36,25 @@ class PlugConfig(db.Model):
     def __repr__(self):
         return f'PlugConfig(id={self.id}, name={self.name}, cure_profile={self.cure_profile})'
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'cure_profile': self.cure_profile,
+            'horizontal_offset': self.horizontal_offset,
+            'vertical_offset': self.vertical_offset,
+            'horizontal_gap': self.horizontal_gap,
+            'vertical_gap': self.vertical_gap,
+            'slot_gap': self.slot_gap,
+            'notes': self.notes
+        }
+
 
 class StatusEnum(Enum):
-    started = 'Started'
-    dispensing = 'Dispensing'
-    curing = 'Curing'
-    stopped = 'Stopped'
-    finished = 'Finished'
-    failed = 'Failed'
+    started = 'started'
+    stopped = 'stopped'
+    finished = 'finished'
+    failed = 'failed'
 
 
 class PlugJob(db.Model):
@@ -65,4 +76,16 @@ class PlugJob(db.Model):
         return f'PlugJob(id={self.id}, config_id={self.config_id}, status={self.status})'
 
     def is_active(self):
-        return self.status == StatusEnum.started or self.status == StatusEnum.dispensing or self.status == StatusEnum.curing
+        return self.status == StatusEnum.started
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'config_id': self.config_id,
+            'status': self.status.value,
+            'start_time': self.start_time.timestamp() if self.start_time else None,
+            'end_time': self.end_time,
+            'duration': self.duration,
+            'notes': self.notes,
+            'config': self.config.to_dict()
+        }
