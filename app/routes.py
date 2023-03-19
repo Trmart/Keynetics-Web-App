@@ -19,7 +19,9 @@ from app import app, db, models, forms
 
 @app.route('/', methods=['GET', 'POST'])
 def jobs():
-    return render_template('jobs.html', page='jobs', title='Jobs', configs=models.PlugConfig.query.all(), jobs=models.PlugJob.query.all())
+    configs = sorted(models.PlugConfig.query.all(), key=lambda config: config.name)
+    jobs = sorted(models.PlugJob.query.all(), key=lambda job: job.start_time, reverse=True)
+    return render_template('jobs.html', page='jobs', title='Jobs', configs=configs, jobs=jobs)
 
 
 @app.route('/configs', methods=['GET', 'POST'])
@@ -39,7 +41,8 @@ def configs():
         db.session.commit()
         flash(f'Added {config.name}!', 'success')
         return redirect(url_for('configs'))
-    return render_template('configs.html', page='configs', title='Configs', form=form, configs=models.PlugConfig.query.all())
+    configs = sorted(models.PlugConfig.query.all(), key=lambda config: config.name)
+    return render_template('configs.html', page='configs', title='Configs', form=form, configs=configs)
 
 
 @app.route('/insights')
@@ -186,7 +189,7 @@ def delete_config(config_id):
 def start_job():
     config_id = request.form.get('config_select')
     config = models.PlugConfig.query.get(config_id)
-    if models.PlugJob.query.filter_by(config_id=config_id, status='Started').first():
+    if models.PlugJob.query.filter_by(config_id=config_id, status=models.StatusEnum.started).first():
         flash(f'Job for {config.name} already started!', 'danger')
         return redirect(url_for('jobs'))
     job = models.PlugJob(config_id=config_id, start_time=datetime.now())
@@ -199,7 +202,7 @@ def start_job():
 @app.route('/stop-job/<int:job_id>', methods=['GET', 'POST'])
 def stop_job(job_id):
     job = models.PlugJob.query.get(job_id)
-    if not job.active():
+    if not job.is_active():
         flash(f'Job for {job.config.name} already stopped!', 'danger')
         return redirect(url_for('jobs'))
     job.status = models.StatusEnum.stopped
@@ -207,6 +210,19 @@ def stop_job(job_id):
     job.duration = round((job.end_time - job.start_time).total_seconds() / 60, 2)
     db.session.commit()
     flash(f'Stopped job for {job.config.name}!', 'success')
+    return redirect(url_for('jobs'))
+
+
+@app.route('/stop-all-jobs', methods=['GET', 'POST'])
+def stop_all_jobs():
+    jobs = models.PlugJob.query.all()
+    for job in jobs:
+        if job.is_active():
+            job.status = models.StatusEnum.stopped
+            job.end_time = datetime.now()
+            job.duration = round((job.end_time - job.start_time).total_seconds() / 60, 2)
+    db.session.commit()
+    flash(f'Stopped all jobs!', 'success')
     return redirect(url_for('jobs'))
 
 

@@ -60,5 +60,5 @@ class PlugJob(db.Model):
     def __repr__(self):
         return f'PlugJob(id={self.id}, config_id={self.config_id}, status={self.status})'
 
-    def active(self):
+    def is_active(self):
         return self.status == StatusEnum.started or self.status == StatusEnum.dispensing or self.status == StatusEnum.curing
