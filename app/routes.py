@@ -233,10 +233,10 @@ def insights():
         'failed_jobs_rate': 0,
         'finished_jobs_rate': 0,
 
-        'stopped_jobs_duration': calc_total_duration(stopped),
-        'failed_jobs_duration': calc_total_duration(failed),
-        'finished_jobs_duration': calc_total_duration(finished),
-        'all_jobs_duration': calc_total_duration(all),
+        'stopped_jobs_duration': "{:.2f}".format(float(calc_total_duration(stopped)) / 60),
+        'failed_jobs_duration': "{:.2f}".format(float(calc_total_duration(failed)) / 60),
+        'finished_jobs_duration': "{:.2f}".format(float(calc_total_duration(finished)) / 60),
+        'all_jobs_duration': "{:.2f}".format(float(calc_total_duration(all)) / 60),
 
         'stopped_jobs_median': calc_median_duration(stopped),
         'failed_jobs_median': calc_median_duration(failed),
