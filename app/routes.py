@@ -169,6 +169,10 @@ def edit_config(config_id):
 @app.route('/copy-config/<int:config_id>', methods=['GET', 'POST'])
 def copy_config(config_id):
     config = models.PlugConfig.query.get(config_id)
+    if models.PlugConfig.query.filter_by(name=f'{config.name} (copy)').first():
+        flash(f'Copy of {config.name} already exists! Please rename it first.', 'danger')
+        return redirect(url_for('configs'))
+
     new_config = models.PlugConfig(
         name=f'{config.name} (copy)',
         cure_profile=config.cure_profile,
