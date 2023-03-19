@@ -17,60 +17,61 @@
   </head>
 
   <body>
-    <header>
+    <header class="container">
+      <h1 class="text-center display-4 keynetics-text">K e y n e t i c s</h1>
+      <ul class="nav nav-pills nav-justified">
+        {% if page == 'jobs' %}
+          <li class="nav-item">
+            <a class="nav-link h5 active" href="{{ url_for('jobs') }}">Jobs</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link h5" href="{{ url_for('jobs') }}">Jobs</a>
+          </li>
+        {% endif %}
+        {% if page == 'configs' %}
+          <li class="nav-item">
+            <a class="nav-link h5 active" href="{{ url_for('configs') }}">Configs</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link h5" href="{{ url_for('configs') }}">Configs</a>
+          </li>
+        {% endif %}
+        {% if page == 'insights' %}
+          <li class="nav-item">
+            <a class="nav-link h5 active" href="{{ url_for('insights') }}">Insights</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link h5" href="{{ url_for('insights') }}">Insights</a>
+          </li>
+        {% endif %}
+        {% if page == 'help' %}
+          <li class="nav-item">
+            <a class="nav-link h5 active" href="{{ url_for('help') }}">Help</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link h5" href="{{ url_for('help') }}">Help</a>
+          </li>
+        {% endif %}
+        {% if page == 'about' %}
+          <li class="nav-item">
+            <a class="nav-link h5 active" href="{{ url_for('about') }}">About</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link h5" href="{{ url_for('about') }}">About</a>
+          </li>
+        {% endif %}
+      </ul>
     </header>
 
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-12">
-          <h1 class="text-center display-4 keynetics-text">K e y n e t i c s</h1>
-          <ul class="nav nav-pills nav-justified">
-            {% if page == 'jobs' %}
-              <li class="nav-item">
-                <a class="nav-link h5 active" href="{{ url_for('jobs') }}">Jobs</a>
-              </li>
-            {% else %}
-              <li class="nav-item">
-                <a class="nav-link h5" href="{{ url_for('jobs') }}">Jobs</a>
-              </li>
-            {% endif %}
-            {% if page == 'configs' %}
-              <li class="nav-item">
-                <a class="nav-link h5 active" href="{{ url_for('configs') }}">Configs</a>
-              </li>
-            {% else %}
-              <li class="nav-item">
-                <a class="nav-link h5" href="{{ url_for('configs') }}">Configs</a>
-              </li>
-            {% endif %}
-            {% if page == 'insights' %}
-              <li class="nav-item">
-                <a class="nav-link h5 active" href="{{ url_for('insights') }}">Insights</a>
-              </li>
-            {% else %}
-              <li class="nav-item">
-                <a class="nav-link h5" href="{{ url_for('insights') }}">Insights</a>
-              </li>
-            {% endif %}
-            {% if page == 'help' %}
-              <li class="nav-item">
-                <a class="nav-link h5 active" href="{{ url_for('help') }}">Help</a>
-              </li>
-            {% else %}
-              <li class="nav-item">
-                <a class="nav-link h5" href="{{ url_for('help') }}">Help</a>
-              </li>
-            {% endif %}
-            {% if page == 'about' %}
-              <li class="nav-item">
-                <a class="nav-link h5 active" href="{{ url_for('about') }}">About</a>
-              </li>
-            {% else %}
-              <li class="nav-item">
-                <a class="nav-link h5" href="{{ url_for('about') }}">About</a>
-              </li>
-            {% endif %}
-          </ul>
+          
           {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
               {% for category, message in messages %}
