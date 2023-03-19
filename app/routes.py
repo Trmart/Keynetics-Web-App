@@ -5,6 +5,7 @@ rendering.
 
 '''
 from flask import render_template, flash, redirect, url_for, Response, request
+from flask_login import login_required, login_user, logout_user, current_user
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
@@ -15,24 +16,37 @@ from datetime import timedelta
 import io
 import random
 
-from app import app, db, models, forms
+from app import app, db, bcrypt, models, forms
 
 
 @app.route('/', methods=['GET', 'POST'])
 def jobs():
-    page = request.args.get('page', 1, type=int)
-    jobs = models.PlugJob.query.order_by(models.PlugJob.start_time.desc()).paginate(page=page, per_page=10)
-    configs = models.PlugConfig.query.order_by(models.PlugConfig.name)
-    return render_template('pages/jobs.html', title='Jobs', page='jobs', configs=configs, jobs=jobs)
+    if not current_user.is_authenticated:
+        form = forms.UserSignInForm()
+        if form.validate_on_submit():
+            user = models.User.query.filter_by(email=form.email.data).first()
+            if user is None or not bcrypt.check_password_hash(user.password, form.password.data):
+                flash('Invalid email or password', 'danger')
+                return redirect(url_for('jobs'))
+            login_user(user)
+            return redirect(url_for('jobs'))
+        return render_template('base.html', form=form)
+    else:
+        page = request.args.get('page', 1, type=int)
+        jobs = models.PlugJob.query.order_by(models.PlugJob.start_time.desc()).paginate(page=page, per_page=10)
+        configs = models.PlugConfig.query.order_by(models.PlugConfig.name)
+        return render_template('pages/jobs.html', title='Jobs', page='jobs', configs=configs, jobs=jobs)
 
 
 @app.route('/job/<int:job_id>', methods=['GET', 'POST'])
+@login_required
 def view_job(job_id):
     job = models.PlugJob.query.get(job_id)
     return render_template('pages/view_job.html', title=f'Job #{job.id}', page='jobs', job=job, config=job.config)
 
 
 @app.route('/add-job-notes/<int:job_id>', methods=['GET', 'POST'])
+@login_required
 def edit_job(job_id):
     job = models.PlugJob.query.get(job_id)
     form = forms.PlugJobForm()
@@ -47,6 +61,7 @@ def edit_job(job_id):
 
 
 @app.route('/start-job', methods=['GET', 'POST'])
+@login_required
 def start_job():
     config_id = request.form.get('config_select')
     config = models.PlugConfig.query.get(config_id)
@@ -62,6 +77,7 @@ def start_job():
 
 
 @app.route('/stop-job/<int:job_id>', methods=['GET', 'POST'])
+@login_required
 def stop_job(job_id):
     job = models.PlugJob.query.get(job_id)
     if not job.is_active():
@@ -76,6 +92,7 @@ def stop_job(job_id):
 
 
 @app.route('/stop-all-jobs', methods=['GET', 'POST'])
+@login_required
 def stop_all_jobs():
     jobs = models.PlugJob.query.all()
     for job in jobs:
@@ -89,6 +106,7 @@ def stop_all_jobs():
 
 
 @app.route('/configs', methods=['GET', 'POST'])
+@login_required
 def configs():
     page = request.args.get('page', 1, type=int)
     form = forms.PlugConfigForm()
@@ -112,6 +130,7 @@ def configs():
 
 
 @app.route('/create-config/', methods=['GET', 'POST'])
+@login_required
 def create_config():
     form = forms.PlugConfigForm()
     if form.validate_on_submit():
@@ -133,12 +152,14 @@ def create_config():
 
 
 @app.route('/config/<int:config_id>', methods=['GET', 'POST'])
+@login_required
 def view_config(config_id):
     config = models.PlugConfig.query.get(config_id)
     return render_template('pages/view_config.html', title=f'{config.name}', page='configs', config=config)
 
 
 @app.route('/edit-config/<int:config_id>', methods=['GET', 'POST'])
+@login_required
 def edit_config(config_id):
     config = models.PlugConfig.query.get(config_id)
     form = forms.PlugConfigForm()
@@ -167,6 +188,7 @@ def edit_config(config_id):
 
 
 @app.route('/copy-config/<int:config_id>', methods=['GET', 'POST'])
+@login_required
 def copy_config(config_id):
     config = models.PlugConfig.query.get(config_id)
     if models.PlugConfig.query.filter_by(name=f'{config.name} (copy)').first():
@@ -190,6 +212,7 @@ def copy_config(config_id):
 
 
 @app.route('/delete-config/<int:config_id>', methods=['GET', 'POST'])
+@login_required
 def delete_config(config_id):
     config = models.PlugConfig.query.get(config_id)
     db.session.delete(config)
@@ -199,6 +222,7 @@ def delete_config(config_id):
 
 
 @app.route('/insights')
+@login_required
 def insights():
     def calc_total_duration(jobs):
         return "{:.2f}".format(sum(job.duration for job in jobs if job.duration is not None))
@@ -275,12 +299,36 @@ def insights():
     return render_template('pages/insights.html', title='Insights', page='insights', analytics=analytics)
 
 
+@app.route('/account', methods=['GET', 'POST'])
+@login_required
+def account():
+    email_form = forms.UserEmailForm()
+    if email_form.validate_on_submit():
+        current_user.email = email_form.email.data
+        db.session.commit()
+        flash('Your email was updated!', 'success')
+        return redirect(url_for('account'))
+    else:
+        email_form.email.data = current_user.email
+
+    password_form = forms.UserPasswordForm()
+    if password_form.validate_on_submit():
+        current_user.password = bcrypt.generate_password_hash(password_form.password.data).decode('utf-8')
+        db.session.commit()
+        flash('Your password was updated!', 'success')
+        return redirect(url_for('account'))
+
+    return render_template('pages/account.html', title='Account', page='account', email_form=email_form, password_form=password_form)
+
+
 @app.route('/help')
+@login_required
 def help():
     return render_template('pages/help.html', title='Help', page='help')
 
 
 @app.route('/about')
+@login_required
 def about():
     return render_template('pages/about.html', title='About', page='about')
 
@@ -304,6 +352,7 @@ def api():
 
 
 @app.route('/durations-plot.png')
+@login_required
 def durations_plot():
     fig = create_durations_plot()
     output = io.BytesIO()
@@ -312,6 +361,7 @@ def durations_plot():
 
 
 @app.route('/status-plot.png')
+@login_required
 def status_plot():
     fig = create_status_plot()
     output = io.BytesIO()
@@ -320,11 +370,20 @@ def status_plot():
 
 
 @app.route('/config-plot.png')
+@login_required
 def config_plot():
     fig = create_config_plot()
     output = io.BytesIO()
     FigureCanvas(fig).print_png(output)
     return Response(output.getvalue(), mimetype='image/png')
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been signed out.', 'success')
+    return redirect(url_for('jobs'))
 
 
 def create_durations_plot():

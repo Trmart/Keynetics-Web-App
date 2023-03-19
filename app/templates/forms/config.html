@@ -6,14 +6,14 @@
         <div class="form-group">
           {{ form.name.label(class="form-control-label") }}
           {% if form.name.errors %}
-            {{ form.name(class="form-control form-control-lg is-invalid") }}
+            {{ form.name(class="form-control form-control-sm is-invalid") }}
             <div class="invalid-feedback">
               {% for error in form.name.errors %}
                 <span>{{ error }}</span>
               {% endfor %}
             </div>
           {% else %}
-            {{ form.name(class="form-control form-control-lg") }}
+            {{ form.name(class="form-control form-control-sm") }}
           {% endif %}
         </div>
       </div>
@@ -21,14 +21,14 @@
         <div class="form-group">
           {{ form.cure_profile.label(class="form-control-label") }}
           {% if form.cure_profile.errors %}
-            {{ form.cure_profile(class="form-control form-control-lg is-invalid") }}
+            {{ form.cure_profile(class="form-control form-control-sm is-invalid") }}
             <div class="invalid-feedback">
               {% for error in form.cure_profile.errors %}
                 <span>{{ error }}</span>
               {% endfor %}
             </div>
           {% else %}
-            {{ form.cure_profile(class="form-control form-control-lg") }}
+            {{ form.cure_profile(class="form-control form-control-sm") }}
           {% endif %}
         </div>
       </div>
@@ -38,14 +38,14 @@
         <div class="form-group">
           {{ form.horizontal_offset.label(class="form-control-label") }}
           {% if form.horizontal_offset.errors %}
-            {{ form.horizontal_offset(class="form-control form-control-lg is-invalid") }}
+            {{ form.horizontal_offset(class="form-control form-control-sm is-invalid") }}
             <div class="invalid-feedback">
               {% for error in form.horizontal_offset.errors %}
                 <span>{{ error }}</span>
               {% endfor %}
             </div>
           {% else %}
-            {{ form.horizontal_offset(class="form-control form-control-lg") }}
+            {{ form.horizontal_offset(class="form-control form-control-sm") }}
           {% endif %}
         </div>
       </div>
@@ -53,14 +53,14 @@
         <div class="form-group">
           {{ form.vertical_offset.label(class="form-control-label") }}
           {% if form.vertical_offset.errors %}
-            {{ form.vertical_offset(class="form-control form-control-lg is-invalid") }}
+            {{ form.vertical_offset(class="form-control form-control-sm is-invalid") }}
             <div class="invalid-feedback">
               {% for error in form.vertical_offset.errors %}
                 <span>{{ error }}</span>
               {% endfor %}
             </div>
           {% else %}
-            {{ form.vertical_offset(class="form-control form-control-lg") }}
+            {{ form.vertical_offset(class="form-control form-control-sm") }}
           {% endif %}
         </div>
       </div>
@@ -68,14 +68,14 @@
         <div class="form-group">
           {{ form.horizontal_gap.label(class="form-control-label") }}
           {% if form.horizontal_gap.errors %}
-            {{ form.horizontal_gap(class="form-control form-control-lg is-invalid") }}
+            {{ form.horizontal_gap(class="form-control form-control-sm is-invalid") }}
             <div class="invalid-feedback">
               {% for error in form.horizontal_gap.errors %}
                 <span>{{ error }}</span>
               {% endfor %}
             </div>
           {% else %}
-            {{ form.horizontal_gap(class="form-control form-control-lg") }}
+            {{ form.horizontal_gap(class="form-control form-control-sm") }}
           {% endif %}
         </div>
       </div>
@@ -83,14 +83,14 @@
         <div class="form-group">
           {{ form.vertical_gap.label(class="form-control-label") }}
           {% if form.vertical_gap.errors %}
-            {{ form.vertical_gap(class="form-control form-control-lg is-invalid") }}
+            {{ form.vertical_gap(class="form-control form-control-sm is-invalid") }}
             <div class="invalid-feedback">
               {% for error in form.vertical_gap.errors %}
                 <span>{{ error }}</span>
               {% endfor %}
             </div>
           {% else %}
-            {{ form.vertical_gap(class="form-control form-control-lg") }}
+            {{ form.vertical_gap(class="form-control form-control-sm") }}
           {% endif %}
         </div>
       </div>
@@ -98,28 +98,28 @@
         <div class="form-group">
           {{ form.slot_gap.label(class="form-control-label") }}
           {% if form.slot_gap.errors %}
-            {{ form.slot_gap(class="form-control form-control-lg is-invalid") }}
+            {{ form.slot_gap(class="form-control form-control-sm is-invalid") }}
             <div class="invalid-feedback">
               {% for error in form.slot_gap.errors %}
                 <span>{{ error }}</span>
               {% endfor %}
             </div>
           {% else %}
-            {{ form.slot_gap(class="form-control form-control-lg") }}
+            {{ form.slot_gap(class="form-control form-control-sm") }}
           {% endif %}
         </div>
       </div>
       <div class="col-md-10">
         {{ form.notes.label(class="form-control-label") }}
         {% if form.notes.errors %}
-          {{ form.notes(class="form-control form-control-lg is-invalid") }}
+          {{ form.notes(class="form-control form-control-sm is-invalid") }}
           <div class="invalid-feedback">
             {% for error in form.notes.errors %}
               <span>{{ error }}</span>
             {% endfor %}
           </div>
         {% else %}
-          {{ form.notes(class="form-control form-control-lg") }}
+          {{ form.notes(class="form-control form-control-sm") }}
           {{ form.submit(class="btn btn-outline-primary mt-2") }}
           <a class="btn btn-outline-danger mt-2" href="{{ url_for('configs') }}">Cancel</a>
         {% endif %}

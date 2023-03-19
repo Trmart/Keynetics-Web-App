@@ -7,7 +7,7 @@
       <form class="form-inline" method="POST" action="{{ url_for('start_job') }}">
         <div class="form-group">
           <div class="input-group">
-            <select name="config_select" class="selectpicker form-control">
+            <select name="config_select" class="selectpicker form-control form-control-md">
               {% for config in configs %}
                 <option value="{{ config.id }}">{{ config.name }}</option>
               {% endfor %}

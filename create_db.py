@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 import os
 import random
 
-from app import app, db, models
+from app import app, db, bcrypt, models
 
 
 def create_db():
@@ -21,6 +21,15 @@ def create_db():
             os.remove(db_path)
 
         db.create_all()
+
+        # User test data
+        for i in range(1, 4):
+            user = models.User(
+                email='user{}@email.com'.format(i),
+                password=bcrypt.generate_password_hash('password{}'.format(i)).decode('utf-8')
+            )
+            db.session.add(user)
+        db.session.commit()
 
         # PlugConfig test data
         for i in range(4, 8):

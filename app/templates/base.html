@@ -18,71 +18,99 @@
 
   <body>
     <header class="container">
-      <h1 class="text-center display-4 keynetics-text">K e y n e t i c s</h1>
-      <ul class="nav nav-pills nav-justified">
-        {% if page == 'jobs' %}
-          <li class="nav-item">
-            <a class="nav-link h5 active" href="{{ url_for('jobs') }}">Jobs</a>
+      {% if current_user.is_authenticated %}
+        <ul class="nav float-right">
+          <li class="nav-item nav-link">
+            <a href="{{ url_for('account') }}">Account</a>
           </li>
-        {% else %}
-          <li class="nav-item">
-            <a class="nav-link h5" href="{{ url_for('jobs') }}">Jobs</a>
+          <li class="nav-item nav-link">
+            <a href="{{ url_for('logout') }}">Logout</a>
           </li>
-        {% endif %}
-        {% if page == 'configs' %}
-          <li class="nav-item">
-            <a class="nav-link h5 active" href="{{ url_for('configs') }}">Configs</a>
-          </li>
-        {% else %}
-          <li class="nav-item">
-            <a class="nav-link h5" href="{{ url_for('configs') }}">Configs</a>
-          </li>
-        {% endif %}
-        {% if page == 'insights' %}
-          <li class="nav-item">
-            <a class="nav-link h5 active" href="{{ url_for('insights') }}">Insights</a>
-          </li>
-        {% else %}
-          <li class="nav-item">
-            <a class="nav-link h5" href="{{ url_for('insights') }}">Insights</a>
-          </li>
-        {% endif %}
-        {% if page == 'help' %}
-          <li class="nav-item">
-            <a class="nav-link h5 active" href="{{ url_for('help') }}">Help</a>
-          </li>
-        {% else %}
-          <li class="nav-item">
-            <a class="nav-link h5" href="{{ url_for('help') }}">Help</a>
-          </li>
-        {% endif %}
-        {% if page == 'about' %}
-          <li class="nav-item">
-            <a class="nav-link h5 active" href="{{ url_for('about') }}">About</a>
-          </li>
-        {% else %}
-          <li class="nav-item">
-            <a class="nav-link h5" href="{{ url_for('about') }}">About</a>
-          </li>
-        {% endif %}
-      </ul>
+        </ul>
+        <h1 class="text-center display-4 keynetics-text">K e y n e t i c s</h1>
+        <ul class="nav nav-pills nav-justified">
+          {% if page == 'jobs' %}
+            <li class="nav-item">
+              <a class="nav-link h5 active" href="{{ url_for('jobs') }}">Jobs</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link h5" href="{{ url_for('jobs') }}">Jobs</a>
+            </li>
+          {% endif %}
+          {% if page == 'configs' %}
+            <li class="nav-item">
+              <a class="nav-link h5 active" href="{{ url_for('configs') }}">Configs</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link h5" href="{{ url_for('configs') }}">Configs</a>
+            </li>
+          {% endif %}
+          {% if page == 'insights' %}
+            <li class="nav-item">
+              <a class="nav-link h5 active" href="{{ url_for('insights') }}">Insights</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link h5" href="{{ url_for('insights') }}">Insights</a>
+            </li>
+          {% endif %}
+          {% if page == 'help' %}
+            <li class="nav-item">
+              <a class="nav-link h5 active" href="{{ url_for('help') }}">Help</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link h5" href="{{ url_for('help') }}">Help</a>
+            </li>
+          {% endif %}
+          {% if page == 'about' %}
+            <li class="nav-item">
+              <a class="nav-link h5 active" href="{{ url_for('about') }}">About</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link h5" href="{{ url_for('about') }}">About</a>
+            </li>
+          {% endif %}
+        </ul>
+      {% else %}
+        <h1 class="text-center display-4 keynetics-text">K e y n e t i c s</h1>
+      {% endif %}
     </header>
 
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-12">
-          
-          {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-              {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">
-                  {{ message }}
-                </div>
-              {% endfor %}
-            {% endif %}
-          {% endwith %}
           <div class="container">
-            {% block content %}{% endblock %}
+            {% if current_user.is_authenticated %}
+              {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                  {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                      {{ message }}
+                    </div>
+                  {% endfor %}
+                {% endif %}
+              {% endwith %}
+              {% block content %}{% endblock %}
+            {% else %}
+              <div class="row d-flex justify-content-center">
+                <div class="col-md-6">
+                  {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                      {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                          {{ message }}
+                        </div>
+                      {% endfor %}
+                    {% endif %}
+                  {% endwith %}
+                </div>
+              </div>
+              {% include 'forms/login.html' %}
+            {% endif %}
           </div>
         </div>
       </div>

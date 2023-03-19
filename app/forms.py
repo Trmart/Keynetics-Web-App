@@ -13,16 +13,51 @@ from wtforms import (
     SubmitField,
     StringField,
     FloatField,
-    TextAreaField
+    TextAreaField,
+    BooleanField,
+    PasswordField
 )
 from wtforms.validators import (
     DataRequired,
     Length,
     NumberRange,
-    ValidationError
+    ValidationError,
+    Email,
+    EqualTo
 )
 
 from app import models
+
+
+class UserSignInForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email(), Length(min=5, max=64)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=5, max=32)])
+    submit = SubmitField('Sign In')
+
+    def __repr__(cls):
+        return f'UserSignInForm(email={cls.email.data})'
+
+
+class UserEmailForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email(), Length(min=5, max=64)])
+    submit = SubmitField('Save')
+
+    def __repr__(cls):
+        return f'UserEmailForm(email={cls.email.data})'
+
+    def validate_email(self, email):
+        user = models.User.query.filter_by(email=email.data).first()
+        if user is not None:
+            raise ValidationError(f'The email "{email.data}" is already in use!')
+
+
+class UserPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=5, max=32)])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Save')
+
+    def __repr__(cls):
+        return f'UserPasswordForm()'
 
 
 class PlugConfigForm(FlaskForm):
