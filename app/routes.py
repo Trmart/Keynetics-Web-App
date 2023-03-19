@@ -272,6 +272,8 @@ def create_durations_plot():
     axis.set_ylabel('Duration (min)')
     axis.get_xaxis().set_major_formatter(matplotlib.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
     axis.get_xaxis().set_major_locator(matplotlib.ticker.MaxNLocator(integer=True))
+    fig.set_size_inches(10, 5)
+    fig.subplots_adjust(left=0.07, right=0.97, top=0.93, bottom=0.1)
     return fig
 
 
@@ -288,6 +290,8 @@ def create_status_plot():
     axis.patches[1].set_facecolor('#FFFF00')
     axis.patches[0].set_facecolor('#0000FF')
     axis.set_title('Status of Jobs')
+    fig.set_size_inches(5, 4)
+    fig.subplots_adjust(left=0, right=1, top=0.93, bottom=0.1)
     return fig
 
 
@@ -299,6 +303,8 @@ def create_config_plot():
     axis = fig.add_subplot(1, 1, 1)
     axis.pie(config_counts.values(), labels=config_counts.keys(), autopct='%1.1f%%')
     axis.set_title('Jobs by Configuration')
+    fig.set_size_inches(5, 4)
+    fig.subplots_adjust(left=0, right=1, top=0.93, bottom=0.1)
     return fig
 
 
