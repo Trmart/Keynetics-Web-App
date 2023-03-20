@@ -8,21 +8,21 @@ dotenv.load_dotenv()
 APP_URL = os.environ.get('APP_URL')
 
 
-def test_api_get():
-    response = requests.get(APP_URL + 'api').json()
+def test_api_jobs_get():
+    response = requests.get(APP_URL + 'api/jobs').json()
     assert len(response['jobs']) == 0 or len(response['jobs']) == 1
     if len(response['jobs']) == 1:
         assert response['jobs'][0]['id'] == 1
         assert response['jobs'][0]['status'] == 'started'
 
 
-def test_api_post():
+def test_api_jobs_post():
     status_update = {
         'id': 1,
         'status': 'finished',
     }
-    requests.post(APP_URL + 'api', json=status_update)
-    response = requests.get(APP_URL + 'api').json()
+    requests.post(APP_URL + 'api/jobs', json=status_update)
+    response = requests.get(APP_URL + 'api/jobs').json()
     assert len(response['jobs']) == 0 or len(response['jobs']) == 1
     if len(response['jobs']) == 1:
         assert response['jobs'][0]['id'] == 1
@@ -30,5 +30,5 @@ def test_api_post():
 
 
 if __name__ == '__main__':
-    test_api_get()
-    test_api_post()
+    test_api_jobs_get()
+    test_api_jobs_post()

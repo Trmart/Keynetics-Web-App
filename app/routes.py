@@ -333,8 +333,8 @@ def about():
     return render_template('pages/about.html', title='About', page='about')
 
 
-@app.route('/api', methods=['GET', 'POST'])
-def api():
+@app.route('/api/jobs', methods=['GET', 'POST'])
+def api_jobs():
     if request.method == 'POST':
         data = request.get_json(force=True)
         job = models.PlugJob.query.filter_by(id=data['id']).first()
