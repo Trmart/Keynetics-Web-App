@@ -27,6 +27,7 @@ In the root directory, create a file named `.env` with the contents:
 ```
 FLASK_SECRET_KEY='fredthebot'
 DATABASE_URL='sqlite:///app.db'
+APP_URL='http://127.0.0.1:5000/'
 ```
 Then, run the below command.
 ```
