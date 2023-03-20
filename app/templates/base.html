@@ -17,16 +17,18 @@
   </head>
 
   <body>
+    <div class="row float-right">
+      <ul class="nav">
+        <li class="nav-item nav-link">
+          <a href="{{ url_for('account') }}">Account</a>
+        </li>
+        <li class="nav-item nav-link">
+          <a href="{{ url_for('logout') }}">Logout</a>
+        </li>
+      </ul>
+    </div>
     <header class="container">
       {% if current_user.is_authenticated %}
-        <ul class="nav float-right">
-          <li class="nav-item nav-link">
-            <a href="{{ url_for('account') }}">Account</a>
-          </li>
-          <li class="nav-item nav-link">
-            <a href="{{ url_for('logout') }}">Logout</a>
-          </li>
-        </ul>
         <h1 class="text-center display-4 keynetics-text">K e y n e t i c s</h1>
         <ul class="nav nav-pills nav-justified">
           {% if page == 'jobs' %}
@@ -121,7 +123,7 @@
         © 2022-2023 Created by
         <a class="text-dark" href="https://www.linkedin.com/in/austin-kugler" target="_blank">Austin Kugler</a>,
         <a class="text-dark" href="https://www.linkedin.com/in/taylor-martin-261542222" target="_blank">Taylor Martin</a>,
-        <a class="text-dark" href="https://www.linkedin.com/" target="_blank">Zach Preston</a>, and
+        <a class="text-dark" href="https://github.com/pres1751" target="_blank">Zach Preston</a>, and
         <a class="text-dark" href="https://www.linkedin.com/in/john-myers-49638416b" target="_blank">John Myers</a>.
       </div>
     </footer>
