@@ -15,6 +15,7 @@ from datetime import datetime
 from datetime import timedelta
 import io
 import random
+from statistics import stdev, mean, median
 
 from app import app, db, bcrypt, models, forms
 
@@ -228,15 +229,16 @@ def insights():
         return "{:.2f}".format(sum(job.duration for job in jobs if job.duration is not None))
 
     def calc_median_duration(jobs):
-        ended_jobs = [job for job in jobs if job.duration is not None]
-        ended_jobs = sorted(ended_jobs, key=lambda job: job.duration)
-        return "{:.2f}".format(ended_jobs[len(ended_jobs) // 2].duration if ended_jobs else 0)
+        durations = [job.duration for job in jobs if job.duration is not None]
+        return "{:.2f}".format(median(durations) if durations else 0)
 
     def calc_mean_duration(jobs):
-        return "{:.2f}".format(sum(job.duration for job in jobs if job.duration is not None) / len(jobs) if jobs else 0)
+        durations = [job.duration for job in jobs if job.duration is not None]
+        return "{:.2f}".format(mean(durations) if durations else 0)
 
     def calc_std_dev_duration(jobs):
-        return "{:.2f}".format((sum((job.duration - sum(job.duration for job in jobs if job.duration is not None) / len(jobs)) ** 2 for job in jobs if job.duration is not None) / len(jobs)) ** 0.5 if jobs else 0)
+        durations = [job.duration for job in jobs if job.duration is not None]
+        return "{:.2f}".format(stdev(durations) if durations else 0)
 
     def calc_min_duration(jobs):
         return "{:.2f}".format(min(job.duration for job in jobs if job.duration is not None) if jobs else 0)
