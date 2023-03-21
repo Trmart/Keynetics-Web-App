@@ -125,10 +125,14 @@
         {% endif %}
       </div>
     </div>
+    <div class="row">
+      <div class="col-md-10">
+        <div class="border-top mt-3">
+          <small class="text-muted">
+            Unsure on what values to input? <a href="{{ url_for('help') }}">Get Help</a>
+          </small>
+        </div>
+      </div>
+    </div>
   </fieldset>
-  <div class="border-top pt-1">
-    <small class="text-muted">
-      Unsure on what values to input? <a href="{{ url_for('help') }}">Get Help</a>
-    </small>
-  </div>
 </form>
